@@ -77,8 +77,8 @@ class MATSEval(HasTraits):
         eps_f = eps[:,:, 2]
         sig_f_e = self.E_f * eps_f
         w_f, eps_f_max = self.g_f(eps_f, eps_f_max)
-        print 'w_f', np.amax(w_f)
-        print 'eps_f', np.amax(eps_f)
+        print('w_f', np.amax(w_f))
+        print('eps_f', np.amax(eps_f))
         sig[:,:, 2] = (1-w_f)*sig_f_e
         D[:,:, 2, 2] = -self.d_g_f(eps_f, eps_f_max) * sig_f_e + (1 - w_f) * self.E_f
 #         sig[:,:, 2] = sig_f_e

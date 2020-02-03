@@ -6,8 +6,8 @@ Created on 12.01.2016
 import numpy as np
 from traits.api import HasTraits, Instance, \
     Property, cached_property, Float, List
-from matseval import MATSEval
-from fets1d52ulrh import FETS1D52ULRH
+from .matseval import MATSEval
+from .fets1d52ulrh import FETS1D52ULRH
 from ibvpy.api import BCDof
 from mathkit.matrix_la.sys_mtx_assembly import SysMtxAssembly
 from ibvpy.mesh.fe_grid import FEGrid

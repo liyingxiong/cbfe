@@ -57,7 +57,7 @@ class RTraceGraph(RTrace):
 
     @on_trait_change('print_button')
     def print_values(self, event=None):
-        print 'x:\t', self.trace.xdata, '\ny:\t', self.trace.ydata
+        print('x:\t', self.trace.xdata, '\ny:\t', self.trace.ydata)
 
     view = View(VSplit(VGroup(HGroup(VGroup(HGroup(Spring(), Item('var_x', style='readonly'),
                                                    Item('idx_x', show_label=False)),
@@ -90,13 +90,13 @@ class RTraceGraph(RTrace):
         '''
         self.var_x_eval = self.rmgr.rte_dict.get(self.var_x, None)
         if self.var_x_eval == None:
-            raise KeyError, 'Variable %s not present in the dictionary:\n%s' % \
-                            (self.var_x, self.rmgr.rte_dict.keys())
+            raise KeyError('Variable %s not present in the dictionary:\n%s' % \
+                            (self.var_x, list(self.rmgr.rte_dict.keys())))
 
         self.var_y_eval = self.rmgr.rte_dict.get(self.var_y, None)
         if self.var_y_eval == None:
-            raise KeyError, 'Variable %s not present in the dictionary:\n%s' % \
-                            (self.var_y, self.rmgr.rte_dict.keys())
+            raise KeyError('Variable %s not present in the dictionary:\n%s' % \
+                            (self.var_y, list(self.rmgr.rte_dict.keys())))
 
     def setup(self):
         self.clear()
@@ -142,13 +142,13 @@ class RTraceGraph(RTrace):
             return
         #
         if len(self.idx_x_arr) > 0:
-            print 'x: summation for', self.idx_x_arr
+            print('x: summation for', self.idx_x_arr)
             xarray = np.array(self._xdata)[:, self.idx_x_arr].sum(1)
         else:
             xarray = np.array(self._xdata)[:, self.idx_x]
 
         if len(self.idx_y_arr) > 0:
-            print 'y: summation for', self.idx_y_arr
+            print('y: summation for', self.idx_y_arr)
             yarray = np.array(self._ydata)[:, self.idx_y_arr].sum(1)
 
 #            print 'yarray', yarray

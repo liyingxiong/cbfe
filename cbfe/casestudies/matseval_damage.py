@@ -266,9 +266,9 @@ class TLoop(HasTraits):
             d_U_k = np.zeros(n_dofs)
             while k <= self.k_max:
                 if k == self.k_max:  # handling non-convergence
-                    print np.amax(kappa)
-                    print t_n1
-                    print 'non-convergence'
+                    print(np.amax(kappa))
+                    print(t_n1)
+                    print('non-convergence')
                 #                     scale *= 0.5
                 # print scale
                 #                     t_n1 = t_n + scale * self.d_t

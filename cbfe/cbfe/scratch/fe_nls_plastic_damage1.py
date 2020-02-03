@@ -413,7 +413,7 @@ class TLoop(HasTraits):
 #                     alpha_r = alpha
 #                     q_r = q
 #                     kappa_r = kappa
-                    print t_n1
+                    print(t_n1)
                     break
                 k += 1
                 step_flag = 'corrector'

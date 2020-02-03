@@ -75,8 +75,8 @@ class MATSEval(HasTraits):
         try:
             D[:, :, 1, 1] = G(eps[:,:, 1])
         except:
-            print np.array(self.slip) * (1. + 1e-4)
-            print eps[:, :, 1]
+            print(np.array(self.slip) * (1. + 1e-4))
+            print(eps[:, :, 1])
             sys.exit()
         d_sig = np.einsum('...st,...t->...s', D, d_eps)
         sig += d_sig
@@ -372,7 +372,7 @@ class TLoop(HasTraits):
 
         while t_n1 <= self.t_max:
             i += 1.
-            print i
+            print(i)
 
             self.ts.mats_eval.slip.append(self.w_arr[i])
             self.ts.mats_eval.bond.append(0.)
@@ -414,12 +414,12 @@ class TLoop(HasTraits):
                 # tau, self.ts.mats_eval.bond[-2], maxiter=500, tol=1.48e-16)
                 tau_i = brentq(tau, 0, 1000, xtol=1e-16)
             except:
-                print tau(0.)
-                print tau(10000.)
+                print(tau(0.))
+                print(tau(10000.))
                 plt.plot(self.ts.mats_eval.slip, self.ts.mats_eval.bond)
                 plt.show()
                 sys.exit()
-            print tau_i
+            print(tau_i)
 #             print tau(tau_i)
 #             print tau(0.8 * tau_i)
 #             print tau(0.9 * tau_i)
@@ -444,9 +444,9 @@ class TLoop(HasTraits):
                 d_U_k = K.solve()
 #                     d_U += d_U_k
                 if np.linalg.norm(R) < self.tolerance:
-                    print F_ext[-1]
-                    print self.pf_arr[i]
-                    print '===='
+                    print(F_ext[-1])
+                    print(self.pf_arr[i])
+                    print('====')
                     break
                 k += 1
                 step_flag = 'corrector'

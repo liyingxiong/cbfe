@@ -3,7 +3,7 @@ Created on 09.05.2017
 
 @author: Yingxiong
 '''
-from fem_inverse_free_end import TStepper, TLoop
+from .fem_inverse_free_end import TStepper, TLoop
 from ibvpy.api import BCDof
 import matplotlib.pyplot as plt
 import numpy as np
@@ -49,7 +49,7 @@ tl = TLoop(ts=ts, w_arr=w_arr, pf_arr=pf_arr, w_free=w_free,
 
 slip, bond = tl.eval()
 
-print slip, bond
+print(slip, bond)
 
 U_record, F_record = np.array(tl.U_record), np.array(tl.F_record)
 

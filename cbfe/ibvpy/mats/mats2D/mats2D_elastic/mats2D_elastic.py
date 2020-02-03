@@ -1,27 +1,26 @@
 from math import pi as Pi, cos, sin, exp, sqrt as scalar_sqrt
+
+from ibvpy.mats.mats2D.mats2D_eval import MATS2DEval
+from ibvpy.mats.mats_eval import IMATSEval
 from numpy import array,  zeros,  dot, float_, copy
 from scipy.linalg import eig, inv
 from traits.api import \
     Array, Bool, Callable, Enum, Float, HasTraits, \
     Instance, Int, Trait, Range, HasTraits, on_trait_change, Event, \
-    implements, Dict, Property, cached_property
+    provides, Dict, Property, cached_property
 from traitsui.api import \
     Item, View, VSplit, Group, Spring
-
-from ibvpy.mats.mats2D.mats2D_eval import MATS2DEval
-from ibvpy.mats.mats_eval import IMATSEval
 
 
 #---------------------------------------------------------------------------
 # Material time-step-evaluator for Scalar-Damage-Model
 #---------------------------------------------------------------------------
+@provides(IMATSEval)
 class MATS2DElastic(MATS2DEval):
 
     '''
     Elastic Model.
     '''
-
-    implements(IMATSEval)
 
     #-------------------------------------------------------------------------
     # Parameters of the numerical algorithm (integration)
@@ -172,6 +171,7 @@ class MATS2DElastic(MATS2DEval):
         from ibvpy.api import TLine
         c['tline'] = TLine(step=1.0, max=1.0)
         return c
+
 
 if __name__ == '__main__':
     #-------------------------------------------------------------------------

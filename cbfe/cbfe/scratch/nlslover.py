@@ -123,7 +123,7 @@ if __name__ == '__main__':
 #     print elem_x_map
     # [ n_e, n_dof_r, n_dim_dof ]
     elem_dof_map = domain.elem_dof_map
-    print 'elem_dof_map', elem_dof_map
+    print('elem_dof_map', elem_dof_map)
 
     # [ n_e, n_ip, n_dim_geo, n_dim_geo ]
     J_mtx = np.einsum('ind,enf->eidf', dNr_geo, elem_x_map)
@@ -243,7 +243,7 @@ if __name__ == '__main__':
         U_record = np.vstack((U_record, U_k))
         F_record = np.vstack((F_record, F_ext))
 
-    print U_record[:, 5]
+    print(U_record[:, 5])
     plt.plot(U_record[:, 5], F_record[:, 5], marker='o')
     plt.xlabel('displacement')
     plt.ylabel('force')

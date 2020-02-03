@@ -12,8 +12,8 @@ from envisage.ui.workbench.api import WorkbenchApplication
 from pyface.api import AboutDialog, ImageResource, SplashScreen
 
 # Local imports.
-import mayavi.api
-from mayavi.preferences.api import preference_manager
+from . import mayavi.api
+from .mayavi.preferences.api import preference_manager
 
 IMG_DIR = dirname(mayavi.api.__file__)
 

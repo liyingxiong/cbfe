@@ -3,12 +3,14 @@ Created on 14.03.2017
 
 @author: Yingxiong
 '''
-from fe_nls_solver_cb import MATSEval, FETS1D52ULRH, TStepper, TLoop
-from traits.api import implements, Int, Array, HasTraits, Instance, \
-    Property, cached_property, Constant, Float, List
-import numpy as np
 from ibvpy.api import BCDof
 from scipy.interpolate import interp2d
+from traits.api import Int, HasTraits, Instance, \
+    Property, cached_property, Float, List
+
+import numpy as np
+
+from .fe_nls_solver_cb import MATSEval, FETS1D52ULRH, TStepper, TLoop
 
 
 class NonLinearCB(HasTraits):
@@ -71,7 +73,7 @@ class NonLinearCB(HasTraits):
         interps_m = []
         interps_f = []
 
-        print 'preparing interploaters...'
+        print('preparing interploaters...')
 
         for L in self.BC_list:
 
@@ -103,7 +105,7 @@ class NonLinearCB(HasTraits):
 
             interps_f.append(interp_f)
 
-        print 'complete'
+        print('complete')
 
         return [interps_m, interps_f]
 

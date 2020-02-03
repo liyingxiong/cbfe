@@ -115,8 +115,8 @@ plt.plot(x, y, '-r', label='avg-all', lw=2)
 # plt.plot(x, np.interp(x, slip10, bond10), 'k',
 #          lw=2, label='15-v1_r3_unloading')
 
-print [x]
-print [y]
+print([x])
+print([y])
 
 plt.xlabel('slip [mm]')
 plt.ylabel('bond [N/mm]')

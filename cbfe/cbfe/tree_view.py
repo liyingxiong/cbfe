@@ -11,12 +11,12 @@ from traits.api import \
 from traitsui.api import \
     View, Item, Group, VGroup, HSplit, TreeEditor, TreeNode
 
-from fets1d52ulrh import FETS1D52ULRH
+from .fets1d52ulrh import FETS1D52ULRH
 from ibvpy.api import BCDof
-from matseval import MATSEval
+from .matseval import MATSEval
 import numpy as np
-from tloop import TLoop
-from tstepper import TStepper
+from .tloop import TLoop
+from .tstepper import TStepper
 from util.traits.editors import MPLFigureEditor
 
 

@@ -5,13 +5,15 @@ Created on 27.03.2018
 '''
 from os.path import join
 
-from cb import NonLinearCB
-from fe_nls_solver_cb import MATSEval, FETS1D52ULRH, TStepper, TLoop
+from stats.misc.random_field.random_field_1D import RandomField
+
 import matplotlib.pyplot as plt
 from matresdev.db.simdb.simdb import simdb
 import numpy as np
-from stats.misc.random_field.random_field_1D import RandomField
-from tensile_test import CompositeTensileTest
+
+from .cb import NonLinearCB
+from .fe_nls_solver_cb import MATSEval, FETS1D52ULRH, TStepper
+from .tensile_test import CompositeTensileTest
 
 
 folder = join(simdb.exdata_dir,

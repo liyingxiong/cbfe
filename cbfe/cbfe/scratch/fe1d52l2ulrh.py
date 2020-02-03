@@ -170,7 +170,7 @@ if __name__ == '__main__':
     K_mtx.register_constraint(a=0)
     K_mtx.register_constraint(a=2 * n_e_x + 1, u_a=1.0)
     u = K_mtx.solve(R)
-    print 'u', u
+    print('u', u)
 
     #=========================================================================
     # strain and slip

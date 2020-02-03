@@ -94,4 +94,4 @@ class FETS1D52ULRH(FETSEval):
 
 if __name__ == '__main__':
 
-    print FETS1D52ULRH().ip_weights
+    print(FETS1D52ULRH().ip_weights)

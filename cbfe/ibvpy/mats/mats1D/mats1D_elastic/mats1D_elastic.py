@@ -1,4 +1,9 @@
 
+from ibvpy.core.tstepper import \
+    TStepper as TS
+from ibvpy.mats.mats1D.mats1D_eval import MATS1DEval
+from ibvpy.mats.mats_eval import IMATSEval
+from mathkit.mfn import MFnLineArray
 from numpy import \
     array, ones, zeros, outer, inner, transpose, dot, frompyfunc, \
     fabs, sqrt, linspace, vdot, identity, tensordot, \
@@ -8,26 +13,19 @@ from scipy.linalg import eig, inv
 from traits.api import \
     Array, Bool, Callable, Enum, Float, HasTraits, \
     Instance, Int, Trait, Range, HasTraits, on_trait_change, Event, \
-    implements, Dict, Property, cached_property, Delegate
+    provides, Dict, Property, cached_property, Delegate
 from traitsui.api import \
     Item, View, HSplit, VSplit, VGroup, Group, Spring
-
-from ibvpy.core.tstepper import \
-    TStepper as TS
-from ibvpy.mats.mats1D.mats1D_eval import MATS1DEval
-from ibvpy.mats.mats_eval import IMATSEval
-from mathkit.mfn import MFnLineArray
 
 
 #---------------------------------------------------------------------------
 # Material time-step-evaluator for Scalar-Damage-Model
 #---------------------------------------------------------------------------
+@provides(IMATSEval)
 class MATS1DElastic(MATS1DEval):
     '''
     Elastic Model.
     '''
-
-    implements(IMATSEval)
 
     E = Float(1.,  # 34e+3,
               label="E",
@@ -132,6 +130,7 @@ class MATS1DElastic(MATS1DEval):
                         var_y='sig_app', idx_y=0,
                         record_on='update')
         ]
+
 
 if __name__ == '__main__':
     #-------------------------------------------------------------------------

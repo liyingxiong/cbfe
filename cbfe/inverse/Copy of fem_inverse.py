@@ -371,7 +371,7 @@ class TLoop(HasTraits):
             d_U_k = K.solve()
             k += 1
             if k == self.k_max:
-                print 'pf non-convergence'
+                print('pf non-convergence')
             step_flag = 'corrector'
             if np.linalg.norm(R) < self.tolerance:
                 return F_ext[-1]
@@ -452,7 +452,7 @@ class TLoop(HasTraits):
 
         while t_n1 <= self.t_max:
             i += 1.
-            print i
+            print(i)
             t_n1 = t_n + self.d_t
 
 #             self.ts.mats_eval.slip.append(self.w_arr[i])
@@ -468,7 +468,7 @@ class TLoop(HasTraits):
 
             tau_i = self.regularization(eps, sig, t_n, self.d_t, i)
 
-            print tau_i
+            print(tau_i)
 
 #             self.ts.mats_eval.slip.append(self.w_arr[i])
 #             self.ts.mats_eval.bond.append(tau_i)

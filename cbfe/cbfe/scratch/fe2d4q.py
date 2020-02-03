@@ -35,7 +35,7 @@ if __name__ == '__main__':
     w_ip = fets_eval.ip_weights
     # [ d, n ]
     geo_r = fets_eval.geo_r.T
-    print 'geo_r', geo_r.shape
+    print('geo_r', geo_r.shape)
     # [ d, n, i ]
     dNr_geo = geo_r[
         :, :, None] * (1 + np.flipud(r_ip)[:, None, :] * np.flipud(geo_r)[:, :, None]) / 4.0
@@ -61,16 +61,16 @@ if __name__ == '__main__':
     # element array with nodal coordinates
     # [ n_e, n_geo_r, n_dim_geo ]
     elem_x_map = domain.elem_X_map
-    print 'elem_x_map', elem_x_map
+    print('elem_x_map', elem_x_map)
     # [ n_e, n_dof_r, n_dim_dof ]
     elem_dof_map = domain.elem_dof_map
 
     # [ n_e, n_ip, n_dim_geo, n_dim_geo ]
     J_mtx = np.einsum('ind,enf->eidf', dNr_geo, elem_x_map)
-    print 'J_mtx', J_mtx.shape
+    print('J_mtx', J_mtx.shape)
     J_inv = np.linalg.inv(J_mtx)
     J_det = np.linalg.det(J_mtx)
-    print J_det
+    print(J_det)
 
     # shape function for the unknowns are identical with the geomeetric
     # approximation
@@ -100,4 +100,4 @@ if __name__ == '__main__':
     K_mtx.register_constraint(a=1)
     K_mtx.register_constraint(a=2)
     u = K_mtx.solve(R)
-    print 'u', u
+    print('u', u)

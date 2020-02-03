@@ -51,10 +51,10 @@ tl = TLoop(ts=ts, w_arr=w_arr, pf_arr=pf_arr, regularization=True)
 slip, bond = tl.eval()
 
 np.set_printoptions(precision=4)
-print 'slip'
-print [np.array(slip)]
-print 'bond'
-print [np.array(bond)]
+print('slip')
+print([np.array(slip)])
+print('bond')
+print([np.array(bond)])
 plt.plot(x, y * 1000. / np.pi / 25. / 125.)
 plt.plot(slip, bond)
 plt.xlabel('slip [mm]')

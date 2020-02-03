@@ -12,6 +12,11 @@
 #
 # Created on May 26, 2009 by: rchx
 
+from ibvpy.core.i_bcond import \
+    IBCond
+from ibvpy.mesh.fe_grid_idx_slice import FEGridIdxSlice
+from ibvpy.plugins.mayavi_util.pipelines import \
+    MVPointLabels
 from numpy import \
     ix_, dot, repeat, zeros
 from scipy.linalg import \
@@ -20,20 +25,16 @@ from traits.api import Float, HasStrictTraits, \
     Instance, Int, Trait, Str, Enum, \
     Callable, List, \
     Button, \
-    implements, Property
+    provides, Property
 from traitsui.api import \
     HSplit, Group, \
     View, Item, TableEditor
+
+import numpy as np
 from traitsui.table_column \
     import ObjectColumn
 
-from bc_dof import BCDof
-from ibvpy.core.i_bcond import \
-    IBCond
-from ibvpy.mesh.fe_grid_idx_slice import FEGridIdxSlice
-from ibvpy.plugins.mayavi_util.pipelines import \
-    MVPointLabels
-import numpy as np
+from .bc_dof import BCDof
 
 
 # The definition of the demo TableEditor:
@@ -46,12 +47,12 @@ bcond_list_editor = TableEditor(
 )
 
 
+@provides(IBCond)
 class BCSlice(HasStrictTraits):
 
     '''
     Implements the IBC functionality for a constrained dof.
     '''
-    implements(IBCond)
 
     name = Str('<unnamed>')
 
@@ -363,6 +364,7 @@ class BCSlice(HasStrictTraits):
                        resizable=True,
                        )
 
+
 if __name__ == '__main__':
 
     from ibvpy.api import \
@@ -448,9 +450,9 @@ if __name__ == '__main__':
     tloop = TLoop(tstepper=ts,
                   tline=TLine(min=0.0, step=1., max=1.0))
 
-    print 'u', tloop.eval()
+    print('u', tloop.eval())
 
-    print 'F', tloop.tstepper.F_ext
+    print('F', tloop.tstepper.F_ext)
 
     from ibvpy.plugins.ibvpy_app import IBVPyApp
     app = IBVPyApp(ibv_resource=tloop)

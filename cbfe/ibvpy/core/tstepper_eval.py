@@ -1,30 +1,24 @@
 
+from numpy import zeros, float_
 from traits.api import \
     Array, Bool, Enum, Float, HasTraits, \
     HasStrictTraits, \
     Instance, Int, Trait, Str, Enum, \
     Callable, List, TraitDict, Any, Range, \
     Delegate, Event, on_trait_change, Button, \
-    Interface, Property, cached_property, WeakRef, Dict
-
+    Interface, Property, cached_property, WeakRef, provides, Dict
 from traitsui.api import \
     Item, View, HGroup, ListEditor, VGroup, \
     HSplit, Group, Handler, VSplit
-
 from traitsui.menu import \
     NoButtons, OKButton, CancelButton, \
     Action
 
-from traits.api import \
-    implements
-
-from numpy import zeros, float_
-
-from i_tstepper_eval import ITStepperEval
-
-from rtrace_eval import RTraceEval
+from .i_tstepper_eval import ITStepperEval
+from .rtrace_eval import RTraceEval
 
 
+@provides(ITStepperEval)
 class TStepperEval(HasTraits):
 
     """
@@ -41,7 +35,6 @@ class TStepperEval(HasTraits):
     evaluated for the provided spatial context and state array
     (rte_dict) attribute.
     """
-    implements(ITStepperEval)
 
     tstepper = WeakRef('ibvpy.core.tstepper.TStepper')
 
@@ -79,7 +72,7 @@ class TStepperEval(HasTraits):
         with a statistical distribution.
         '''
         params = {}
-        for name, trait in self.traits().items():
+        for name, trait in list(self.traits().items()):
             if trait.trait_type.__class__ is Float:
                 params[name] = trait
         return params

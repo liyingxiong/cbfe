@@ -1,27 +1,24 @@
+from numpy import linspace, ix_, mgrid, ogrid, array, hstack, vstack, zeros, arange, c_, newaxis
 from traits.api import \
     Array, Bool, Enum, Float, HasTraits, HasStrictTraits, \
     Instance, Int, Trait, Str, Enum, \
     Callable, List, TraitDict, Any, Range, \
     Delegate, Event, on_trait_change, Button, \
-    Interface, WeakRef, implements, Property, cached_property, Tuple, \
+    Interface, WeakRef, Property, cached_property, Tuple, \
     Dict
 from traitsui.api import Item, View, HGroup, ListEditor, VGroup, \
     HSplit, Group, Handler, VSplit, TableEditor, ListEditor
-
 from traitsui.menu import NoButtons, OKButton, CancelButton, \
     Action
 
-from traitsui.ui_editors.array_view_editor \
-    import ArrayViewEditor
-
 from traitsui.table_column \
     import ObjectColumn, ExpressionColumn
-
 from traitsui.table_filter \
     import TableFilter, RuleTableFilter, RuleFilterTemplate, \
     MenuFilterTemplate, EvalFilterTemplate, EvalTableFilter
+from traitsui.ui_editors.array_view_editor \
+    import ArrayViewEditor
 
-from numpy import linspace, ix_, mgrid, ogrid, array, hstack, vstack, zeros, arange, c_, newaxis
 
 # tvtk related imports
 #
@@ -29,8 +26,6 @@ from numpy import linspace, ix_, mgrid, ogrid, array, hstack, vstack, zeros, ara
 # from etsproxy.tvtk.pyface.actor_editor import ActorEditor
 # from etsproxy.tvtk.pyface import actors
 # from etsproxy.tvtk.api import tvtk
-
-
 class SContext:  # (HasTraits):
 
     '''

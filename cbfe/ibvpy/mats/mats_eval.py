@@ -1,17 +1,17 @@
 
-from numpy import zeros, linalg, tensordot, dot, min, max, argmax, array, pi, \
-    append
-from scipy.linalg import eigh
-from traits.api import \
-    Array, Bool, Callable, Enum, Float, HasStrictTraits, Interface, implements, \
-    Instance, Int, Trait, Str, Enum, Callable, List, TraitDict, Any, \
-    on_trait_change, Tuple, WeakRef, Delegate, Property, cached_property, \
-    Dict, Constant
-
 from ibvpy.core.i_tstepper_eval import \
     ITStepperEval
 from ibvpy.core.tstepper_eval import \
     TStepperEval
+from numpy import zeros, linalg, tensordot, dot, min, max, argmax, array, pi, \
+    append
+from scipy.linalg import eigh
+from traits.api import \
+    Array, Bool, Callable, Enum, Float, HasStrictTraits, Interface, \
+    provides, \
+    Instance, Int, Trait, Str, Enum, Callable, List, TraitDict, Any, \
+    on_trait_change, Tuple, WeakRef, Delegate, Property, cached_property, \
+    Dict, Constant
 
 
 #-------------------------------------------------------------------
@@ -34,9 +34,8 @@ class IMATSEval(ITStepperEval):
 #-------------------------------------------------------------------
 
 
+@provides(IMATSEval)
 class MATSEval(HasStrictTraits, TStepperEval):
-
-    implements(IMATSEval)
 
     # Callable specifying spatial profile of an initial strain field
     # the parameter is X - global coordinates of the material point
@@ -162,7 +161,7 @@ class MATSEval(HasStrictTraits, TStepperEval):
         # of eigenvectors eigvec
         #
         eps_one = eigvec[:, -1]
-        print X_mtx
+        print(X_mtx)
         # Project the coordinate vectors into the determined direction
         #
         proj = dot(X_mtx, eps_one)

@@ -6,24 +6,24 @@
 
 # Standard library imports.
 import logging
-from mayavi.core.customize import get_custom_plugins
-from mayavi.preferences.api import preference_manager
+from .mayavi.core.customize import get_custom_plugins
+from .mayavi.preferences.api import preference_manager
 import sys
 
 from traits.api import \
     HasTraits, Instance, Int, \
     on_trait_change
-from ibv_model_plugin import IBVModelPlugin
-from ibv_model_ui_plugin import IBVModelUIPlugin
-from ibvpy_workbench_application import IBVPyWorkbenchApplication
-import mayavi.plugins.app as mayavi_app
-from mayavi_engine import set_engine
-from rtrace_plugin import RTracePlugin
-from rtrace_ui_plugin import RTraceUIPlugin
-from tloop_plugin import TLoopPlugin
-from tloop_ui_plugin import TLoopUIPlugin
-from tstepper_plugin import TStepperPlugin
-from tstepper_ui_plugin import TStepperUIPlugin
+from .ibv_model_plugin import IBVModelPlugin
+from .ibv_model_ui_plugin import IBVModelUIPlugin
+from .ibvpy_workbench_application import IBVPyWorkbenchApplication
+from . import mayavi.plugins.app as mayavi_app
+from .mayavi_engine import set_engine
+from .rtrace_plugin import RTracePlugin
+from .rtrace_ui_plugin import RTraceUIPlugin
+from .tloop_plugin import TLoopPlugin
+from .tloop_ui_plugin import TLoopUIPlugin
+from .tstepper_plugin import TStepperPlugin
+from .tstepper_ui_plugin import TStepperUIPlugin
 
 
 # Enthought library imports.
@@ -173,7 +173,7 @@ class IBVPyApp(HasTraits):
             window = app.workbench.active_window
             e = window.get_service(ETS_BASENAME +
                                    'mayavi.core.engine.Engine')
-            print 'e', e
+            print('e', e)
             set_engine(e)
             self.ibv_resource.bind_services(window)
             self.ibv_resource.register_mv_pipelines(e)
@@ -189,7 +189,7 @@ class IBVPyApp(HasTraits):
         if trait_name != 'started' or not new:
             return
         app = self.application
-        from mayavi.plugins.script import Script
+        from .mayavi.plugins.script import Script
         window = app.workbench.active_window
         # Set our script instance.
         self.script = window.get_service(Script)

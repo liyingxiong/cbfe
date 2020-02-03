@@ -7,7 +7,7 @@ from numpy import \
 from scipy.linalg import \
      inv
 
-from fets3D import FETS3D
+from .fets3D import FETS3D
 
 
 #-----------------------------------------------------------------------------------

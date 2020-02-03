@@ -48,7 +48,7 @@ class MATSXDExplore(HasStrictTraits):
         tl = self.explorer.tloop
         tl.bcond_list = ec['bcond_list']
         tl.rtrace_list = ec['rtrace_list']
-        if ec.has_key('tline'):
+        if 'tline' in ec:
             tl.tline = ec['tline']
         tl.reset()
 

@@ -36,7 +36,7 @@ def reinf_law(x):
         0.006 ** 2 + k * 0.006 + 170000. * (x - 0.006)
     return b1 * (x < 0.006) + b2 * (x >= 0.006)
 
-print a, b
+print(a, b)
 
 plt.plot(eps_arr, sig_arr)
 plt.plot(eps_arr, reinf_law(eps_arr))

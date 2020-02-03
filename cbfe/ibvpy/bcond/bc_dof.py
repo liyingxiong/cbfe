@@ -1,18 +1,18 @@
+from ibvpy.core.i_bcond import \
+    IBCond
 from numpy import \
     ix_, array, float_
 from traits.api import Float, HasStrictTraits, \
-    Int,  Enum, on_trait_change, \
-    Callable, List,  Any, implements
-from ibvpy.core.i_bcond import \
-    IBCond
+    Int, provides, Enum, \
+    Callable, List,  Any
 
 
+@provides(IBCond)
 class BCDof(HasStrictTraits):
 
     '''
     Implements the IBC functionality for a constrained dof.
     '''
-    implements(IBCond)
 
     var = Enum('u', 'f', 'eps', 'sig',)
     dof = Int
@@ -188,4 +188,4 @@ if __name__ == '__main__':
                        BCDof(
                            var='u', dof=5, link_dofs=[16], link_coeffs=[1.], value=0.),
                        BCDof(var='f', dof=21, value=10)])
-    print tloop.eval()
+    print(tloop.eval())

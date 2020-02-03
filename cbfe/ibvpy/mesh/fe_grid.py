@@ -1,16 +1,6 @@
 
-from numpy import copy, zeros, array_equal
-from traits.api import \
-    Instance, Array, Int, on_trait_change, Property, cached_property, \
-    List, Button, HasTraits, implements, WeakRef, Float,  \
-    Callable, Str, Event
-from traitsui.api import View, Item, HSplit, Group, TabularEditor
-from traitsui.tabular_adapter import TabularAdapter
+from functools import reduce
 
-from fe_grid_activation_map import FEGridActivationMap
-from fe_grid_idx_slice import FEGridIdxSlice
-from fe_grid_ls_slice import FEGridLevelSetSlice
-from i_fe_uniform_domain import IFEUniformDomain
 from ibvpy.fets.i_fets_eval import IFETSEval
 from ibvpy.mesh.cell_grid.cell_array import ICellView, CellView, CellArray, ICellArraySource
 from ibvpy.mesh.cell_grid.cell_grid import CellGrid
@@ -18,6 +8,18 @@ from ibvpy.mesh.cell_grid.cell_spec import CellSpec
 from ibvpy.mesh.cell_grid.dof_grid import DofCellGrid, DofCellView
 from ibvpy.mesh.cell_grid.geo_grid import GeoCellGrid, GeoCellView
 from ibvpy.rtrace.rt_domain import RTraceDomain
+from numpy import copy, zeros, array_equal
+from traits.api import \
+    Instance, Array, Int, on_trait_change, Property, cached_property, \
+    List, Button, HasTraits, provides, WeakRef, Float,  \
+    Callable, Str, Event
+from traitsui.api import View, Item, HSplit, Group, TabularEditor
+from traitsui.tabular_adapter import TabularAdapter
+
+from .fe_grid_activation_map import FEGridActivationMap
+from .fe_grid_idx_slice import FEGridIdxSlice
+from .fe_grid_ls_slice import FEGridLevelSetSlice
+from .i_fe_uniform_domain import IFEUniformDomain
 
 
 #-----------------------------------------------------------------------------
@@ -45,6 +47,7 @@ class PointListTabularAdapter (TabularAdapter):
         return str(self.row)
 
 #-- Tabular Editor Definition --------------------------------------------
+
 
 point_list_tabular_editor = TabularEditor(
     adapter=PointListTabularAdapter(),
@@ -86,6 +89,7 @@ class MElem(HasTraits):
         return 'points:\n%s\ndofs %s' % (self.point_X_arr, self.dofs)
 
 
+@provides(ICellArraySource, IFEUniformDomain)
 class FEGrid(FEGridActivationMap):
 
     '''Structured FEGrid consisting of potentially independent
@@ -116,8 +120,6 @@ class FEGrid(FEGridActivationMap):
        visualization field.(where to specify the topology? - probably in
        the CellSpec?
     '''
-    implements(ICellArraySource)
-    implements(IFEUniformDomain)
 
     changed_structure = Event
 
@@ -721,6 +723,7 @@ class FEGrid(FEGridActivationMap):
                        )
 
 
+@provides(ICellView)
 class FECellView(CellView):
     geo_view = Instance(GeoCellView)
 
@@ -731,8 +734,6 @@ class FECellView(CellView):
 
     def _dof_view_default(self):
         return DofCellView()
-
-    implements(ICellView)
 
     @on_trait_change('cell_grid')
     def _reset_view_links(self):
@@ -756,6 +757,7 @@ class FECellView(CellView):
                        width=0.6,
                        height=0.2)
 
+
 if __name__ == '__main__':
 
     from ibvpy.fets.fets2D.fets2D4q import FETS2D4Q
@@ -769,22 +771,22 @@ if __name__ == '__main__':
     fe_domain.configure_traits()
 
     import sys
-    print 'refcount', sys.getrefcount(fe_domain)
+    print('refcount', sys.getrefcount(fe_domain))
     dots = fe_domain.dots
-    print dots.fets_eval
-    print 'refcount', sys.getrefcount(fe_domain)
+    print(dots.fets_eval)
+    print('refcount', sys.getrefcount(fe_domain))
 
-    print 'dof_r'
-    print fe_domain.dof_r
+    print('dof_r')
+    print(fe_domain.dof_r)
 
-    print fe_domain.geo_grid.cell_node_map
-    print fe_domain.dof_grid.cell_dof_map
+    print(fe_domain.geo_grid.cell_node_map)
+    print(fe_domain.dof_grid.cell_dof_map)
 # coord_max = (1.,1.,0.)
 # fe_domain.` (1,1)
 # fe_domain.n_nodal_dofs = 2
 #    print fe_domain.dof_grid.cell_dof_map
-    print fe_domain.elem_dof_map
-    print fe_domain.elem_X_map[0]
+    print(fe_domain.elem_dof_map)
+    print(fe_domain.elem_X_map[0])
 
 #    for e in fe_domain.elements:
 #        print e

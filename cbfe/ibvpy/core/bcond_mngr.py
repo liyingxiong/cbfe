@@ -8,7 +8,7 @@ from traitsui.api import \
     View, Item, VSplit, \
     TableEditor, ObjectColumn
 
-from i_bcond import IBCond
+from .i_bcond import IBCond
 
 
 # The definition of the demo TableEditor:

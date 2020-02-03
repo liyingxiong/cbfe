@@ -12,9 +12,9 @@ from traitsui.menu import \
     NoButtons, OKButton, CancelButton, \
     Action
 
-from bcond_mngr import BCondMngr
-from i_sdomain import ISDomain
-from ibv_resource import IBVResource
+from .bcond_mngr import BCondMngr
+from .i_sdomain import ISDomain
+from .ibv_resource import IBVResource
 from ibvpy.mesh.fe_domain import FEDomain
 from ibvpy.mesh.fe_grid import FEGrid
 from ibvpy.mesh.fe_refinement_grid import FERefinementGrid
@@ -22,10 +22,10 @@ from ibvpy.mesh.fe_subdomain import FESubDomain
 from mathkit.matrix_la.sys_mtx_assembly import SysMtxArray
 from mathkit.matrix_la.sys_mtx_assembly import SysMtxAssembly
 import numpy as np
-from rtrace_mngr import RTraceMngr
-from scontext import SContext
-from sdomain import SDomain
-from tstepper_eval import ITStepperEval
+from .rtrace_mngr import RTraceMngr
+from .scontext import SContext
+from .sdomain import SDomain
+from .tstepper_eval import ITStepperEval
 
 
 class TStepper(IBVResource):
@@ -101,7 +101,7 @@ class TStepper(IBVResource):
                 elif isinstance(d, FESubDomain):
                     d.domain = self._sdomain
                 else:
-                    raise TypeError, 'The list can contain only FEGrid or FERefinementGrid'
+                    raise TypeError('The list can contain only FEGrid or FERefinementGrid')
         else:
             self._sdomain = value
 

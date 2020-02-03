@@ -63,8 +63,8 @@ slip_avg = np.linspace(0, 4, 50)
 bond_avg = np.interp(slip_avg, slip1, bond1) / 3. + np.interp(slip_avg,
                                                               slip2, bond2) / 3. + np.interp(slip_avg, slip3, bond3) / 3.
 
-print [slip_avg]
-print [bond_avg]
+print([slip_avg])
+print([bond_avg])
 
 plt.plot(slip_avg, bond_avg, 'k--', lw=3)
 

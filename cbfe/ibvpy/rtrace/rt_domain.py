@@ -1,54 +1,45 @@
+import os
+
+from ibvpy.core.i_sdomain import \
+    ISDomain
+from ibvpy.core.sdomain import \
+    SDomain
 from traits.api import \
     Array, Bool, Enum, Float, HasTraits, HasStrictTraits, \
     Instance, Int, Trait, Str, Enum, \
     Callable, List, TraitDict, Any, Range, \
     Delegate, Event, on_trait_change, Button, \
-    Interface, WeakRef, implements, Property, cached_property, Tuple, \
+    Interface, WeakRef, provides, Property, cached_property, Tuple, \
     Dict
-
-from traitsui.api \
-    import Item, View, HGroup, ListEditor, VGroup, \
-    HSplit, Group, Handler, VSplit, TableEditor, ListEditor
-
-from traitsui.menu \
-    import NoButtons, OKButton, CancelButton, \
-    Action
-
-from traitsui.ui_editors.array_view_editor \
-    import ArrayViewEditor
-
-from traitsui.table_column \
-    import ObjectColumn, ExpressionColumn
-
-from traitsui.table_filter \
-    import TableFilter, RuleTableFilter, RuleFilterTemplate, \
-    MenuFilterTemplate, EvalFilterTemplate, EvalTableFilter
-
-from numpy \
-    import ix_, mgrid, array, arange, c_, newaxis, setdiff1d, zeros, \
-    float_, repeat, hstack, ndarray, append
-
-from ibvpy.plugins.mayavi_util.pipelines \
-    import MVUnstructuredGrid, MVPolyData
-
-from ibvpy.core.rtrace \
-    import RTrace
-
-# tvtk related imports
-#
 from traitsui.api import \
     View, Item, HSplit, VSplit
 from tvtk.api import \
     tvtk
-from ibvpy.core.i_sdomain import \
-    ISDomain
 
-from ibvpy.core.sdomain import \
-    SDomain
+from ibvpy.core.rtrace \
+    import RTrace
+from ibvpy.plugins.mayavi_util.pipelines \
+    import MVUnstructuredGrid, MVPolyData
+from numpy \
+    import ix_, mgrid, array, arange, c_, newaxis, setdiff1d, zeros, \
+    float_, repeat, hstack, ndarray, append
+from traitsui.api \
+    import Item, View, HGroup, ListEditor, VGroup, \
+    HSplit, Group, Handler, VSplit, TableEditor, ListEditor
+from traitsui.menu \
+    import NoButtons, OKButton, CancelButton, \
+    Action
+from traitsui.table_column \
+    import ObjectColumn, ExpressionColumn
+from traitsui.table_filter \
+    import TableFilter, RuleTableFilter, RuleFilterTemplate, \
+    MenuFilterTemplate, EvalFilterTemplate, EvalTableFilter
+from traitsui.ui_editors.array_view_editor \
+    import ArrayViewEditor
 
-import os
 
-
+# tvtk related imports
+#
 class RTraceDomain(HasTraits):
 
     '''
@@ -83,7 +74,7 @@ class RTraceDomain(HasTraits):
         '''
         # self.mvp_mgrid_geo.redraw()
 
-        print 'REDRAWING', self.sd.name
+        print('REDRAWING', self.sd.name)
 
         self.mvp_mgrid_geo.rebuild_pipeline(self.vtk_node_structure)
 

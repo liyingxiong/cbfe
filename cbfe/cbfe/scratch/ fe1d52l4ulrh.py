@@ -66,16 +66,16 @@ if __name__ == '__main__':
     # element array with nodal coordinates
     # [ n_e, n_geo_r, n_dim_geo ]
     elem_x_map = domain.elem_X_map
-    print 'elem_x_map', elem_x_map
+    print('elem_x_map', elem_x_map)
     # [ n_e, n_dof_r, n_dim_dof ]
     elem_dof_map = domain.elem_dof_map
 #     print 'elem_dof_map', elem_dof_map
 
     # [ n_e, n_ip, n_dim_geo, n_dim_geo ]
     J_mtx = np.einsum('ind,enf->eidf', dNr_geo, elem_x_map)
-    print 'J_mtx', J_mtx.shape
+    print('J_mtx', J_mtx.shape)
     J_inv = np.linalg.inv(J_mtx)
-    print 'J_inv', J_inv.shape
+    print('J_inv', J_inv.shape)
     J_det = np.linalg.det(J_mtx)
 
     # shape function for the unknowns
@@ -87,24 +87,24 @@ if __name__ == '__main__':
     Nr = np.einsum('dni->ind', Nr)
     dNr = np.einsum('dni->ind', dNr)
 
-    print geo_r[0,:]
-    print 'Nr', Nr
-    print Nr.shape
-    print 'dNr', dNr
-    print dNr.shape
+    print(geo_r[0,:])
+    print('Nr', Nr)
+    print(Nr.shape)
+    print('dNr', dNr)
+    print(dNr.shape)
 
     # [ n_e, n_ip, n_dof_r, n_dim_dof ]
     dNx = np.einsum('eidf,inf->eind', J_inv, dNr)
 
-    print 'dNx', dNx.shape
-    print 'dNx', dNx
+    print('dNx', dNx.shape)
+    print('dNx', dNx)
 
     B_N_factor = np.array([[1, 1],
                            [1, 1],
                            [-1, -1],
                            [-1, -1]])
 
-    print Nr[:,:, [0, 0]]*B_N_factor
+    print(Nr[:,:, [0, 0]]*B_N_factor)
 
     B = np.zeros((n_e, n_ip, n_dof_r, n_s, n_dim_dof), dtype='f')
     B_N_rows, B_N_cols = [1, 2], [0, 1]
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     B[:,:, [0, 1], 0, 0] = dNx[:, 0, [0, 1], 0]
     B[:,:, [2, 3], 3, 0] = dNx[:, 0, [2, 3], 0]
 
-    print B
+    print(B)
 
 #     B_n_rows, B_n_cols = [0, 1, 2], [0, 0, 1]
 #     B[:,:, 0, B_n_rows, B_n_cols] = dNx[:,:, 0, 0],
@@ -125,17 +125,17 @@ if __name__ == '__main__':
     K_mtx = SysMtxAssembly()
     K_mtx.add_mtx_array(K.reshape(-1, n_el_dofs, n_el_dofs), elem_dof_map)
 
-    print K_mtx
+    print(K_mtx)
 
     #=========================================================================
     # Load vector
     #=========================================================================
 
     R = np.zeros((n_dofs,), dtype='float_')
-    print R
+    print(R)
     R[6] = 1.0
     K_mtx.register_constraint(a=0)
     K_mtx.register_constraint(a=1)
     K_mtx.register_constraint(a=2)
     u = K_mtx.solve(R)
-    print 'u', u
+    print('u', u)

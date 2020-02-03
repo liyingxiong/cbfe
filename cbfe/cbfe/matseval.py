@@ -47,7 +47,7 @@ class MATSEval(HasTraits):
         #         g = lambda k: 0.8 - 0.8 * np.exp(-k)
         #         g = lambda k: 1. / (1 + np.exp(-2 * k + 6.))
 
-        print 'matseval called'
+        print('matseval called')
         n_e, n_ip, n_s = eps.shape
         D = np.zeros((n_e, n_ip, 3, 3))
         D[:, :, 0, 0] = self.E_m

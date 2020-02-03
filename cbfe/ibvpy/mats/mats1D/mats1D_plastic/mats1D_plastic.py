@@ -12,47 +12,42 @@
 #
 # Created on Sep 4, 2009 by: rch
 
-from traits.api import \
-    Array, Bool, Callable, Enum, Float, HasTraits, \
-    Instance, Int, Trait, Range, HasTraits, on_trait_change, Event, \
-    implements, Dict, Property, cached_property, Delegate
+from math import exp, copysign, sin
 
-from traitsui.api import \
-    Item, View, HSplit, VSplit, VGroup, Group, Spring
-
-# from dacwt import DAC
-
+from ibvpy.api import RTrace, RTraceGraph, BCDof
+from ibvpy.core.tstepper import \
+    TStepper as TS
+from ibvpy.mats.mats1D.mats1D_eval import MATS1DEval
+from ibvpy.mats.mats_eval import IMATSEval
 from numpy import \
     array, ones, zeros, outer, inner, transpose, dot, frompyfunc, \
     fabs, sqrt, linspace, vdot, identity, tensordot, \
     sin as nsin, meshgrid, float_, ix_, \
     vstack, hstack, sqrt as arr_sqrt
+from traits.api import \
+    Array, Bool, Callable, Enum, Float, HasTraits, \
+    Instance, Int, Trait, Range, HasTraits, on_trait_change, Event, \
+    provides, Dict, Property, cached_property, Delegate
+from traitsui.api import \
+    Item, View, HSplit, VSplit, VGroup, Group, Spring
 
-from math import exp, copysign, sin
 
-
+# from dacwt import DAC
 def sign(val):
     return copysign(1, val)
 
-from ibvpy.core.tstepper import \
-    TStepper as TS
-
-from ibvpy.mats.mats_eval import IMATSEval
-from ibvpy.mats.mats1D.mats1D_eval import MATS1DEval
-from ibvpy.api import RTrace, RTraceGraph, BCDof
 
 #---------------------------------------------------------------------------
 # Material time-step-evaluator for Scalar-Damage-Model
 #---------------------------------------------------------------------------
 
 
+@provides(IMATSEval)
 class MATS1DPlastic(MATS1DEval):
 
     '''
     Scalar Damage Model.
     '''
-
-    implements(IMATSEval)
 
     E = Float(1.,  # 34e+3,
               label="E",
@@ -241,6 +236,7 @@ class MATS1DPlastic(MATS1DEval):
         ]
         c['tline'] = TLine(step=0.3, max=10)
         return c
+
 
 if __name__ == '__main__':
 

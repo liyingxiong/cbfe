@@ -185,7 +185,7 @@ if __name__ == '__main__':
         K_mtx.register_constraint(a=0)
         K_mtx.register_constraint(a=2 * n_e_x + 1, u_a=1.2)
         u = K_mtx.solve(R)
-        print 'u', u
+        print('u', u)
 
         #======================================================================
         # strain and slip
@@ -212,7 +212,7 @@ if __name__ == '__main__':
         # for convergence check
         #======================================================================
         u_norm = np.linalg.norm(u - u_old)
-        print u_norm
+        print(u_norm)
         u_old = u
 
     #=========================================================================

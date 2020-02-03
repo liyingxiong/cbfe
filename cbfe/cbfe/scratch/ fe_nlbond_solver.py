@@ -30,8 +30,8 @@ class MATSEval(HasTraits):
         D[:,:, 0, 0] = self.E_m
         D[:,:, 2, 2] = self.E_f
         D[:,:, 1, 1] = self.get_G(eps[:,:, 1])
-        print eps[:,:, 1]
-        print self.get_G(eps[:,:, 1])
+        print(eps[:,:, 1])
+        print(self.get_G(eps[:,:, 1]))
         return D
 #         return np.diag(np.array([self.E_m, self.G, self.E_f]))
 

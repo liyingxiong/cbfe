@@ -15,7 +15,7 @@ from mathkit.matrix_la.sys_mtx_assembly import SysMtxAssembly
 from mayavi.sources.api import VTKDataSource, VTKFileReader
 from scipy.interpolate import interp1d
 from scipy.optimize import newton, brentq, bisect, minimize_scalar
-from traits.api import implements, Int, Array, HasTraits, Instance, \
+from traits.api import provides, Int, Array, HasTraits, Instance, \
     Property, cached_property, Constant, Float, List
 
 import matplotlib.pyplot as plt
@@ -53,8 +53,8 @@ class MATSEval(HasTraits):
         try:
             D[:, :, 1, 1] = self.G(eps[:, :, 1])
         except:
-            print np.array(self.slip)
-            print eps[:, :, 1]
+            print(np.array(self.slip))
+            print(eps[:, :, 1])
             sys.exit()
         d_sig = np.einsum('...st,...t->...s', D, d_eps)
         sig += d_sig
@@ -65,13 +65,12 @@ class MATSEval(HasTraits):
     n_s = Constant(3)
 
 
+@provides(IFETSEval)
 class FETS1D52ULRH(FETSEval):
 
     '''
     Fe Bar 2 nodes, deformation
     '''
-
-    implements(IFETSEval)
 
     debug_on = True
 
@@ -362,8 +361,8 @@ class TLoop(HasTraits):
                 d_U_k = K.solve()
                 k += 1
                 if k == self.k_max:
-                    print tau_i
-                    print np.linalg.norm(R)
+                    print(tau_i)
+                    print(np.linalg.norm(R))
                     raise Exception('Non convergence')
                 step_flag = 'corrector'
                 if np.linalg.norm(R) < self.tolerance:
@@ -391,7 +390,7 @@ class TLoop(HasTraits):
                 d_U_k = K.solve()
                 k += 1
                 if k == self.k_max:
-                    print np.linalg.norm(R)
+                    print(np.linalg.norm(R))
                     raise Exception('Non convergence')
                 step_flag = 'corrector'
                 if np.linalg.norm(R) < self.tolerance:
@@ -422,7 +421,7 @@ class TLoop(HasTraits):
 
             self.ts.mats_eval.slip.append(self.w_arr[i])
             self.ts.mats_eval.bond.append(0.)
-            print self.w_arr[i]
+            print(self.w_arr[i])
 
             def tau(tau_i):
                 return self.pf(
@@ -432,16 +431,16 @@ class TLoop(HasTraits):
                 tau_i = brentq(tau, 1e-6, 1000., xtol=1e-16)
             except:
                 #                 print "range not correct f(a)*f(b)>0"
-                print tau(0.1)
-                print tau(1000.)
+                print(tau(0.1))
+                print(tau(1000.))
 #                 plt.plot(self.ts.mats_eval.slip, self.ts.mats_eval.bond)
 #                 plt.xlabel('slip [mm]')
 #                 plt.ylabel('bond [N/mm]')
 #                 plt.show()
                 tau_i = 0.
 
-            print tau_i
-            print '============='
+            print(tau_i)
+            print('=============')
             self.ts.mats_eval.bond[-1] = tau_i
 #
             eps1, sig1 = self.update_eps_sig(self.w_arr[i], eps1, sig1)
@@ -504,10 +503,10 @@ if __name__ == '__main__':
     slip, bond = tl.eval()
 
     np.set_printoptions(precision=4)
-    print 'slip'
-    print [np.array(slip)]
-    print 'bond'
-    print [np.array(bond)]
+    print('slip')
+    print([np.array(slip)])
+    print('bond')
+    print([np.array(bond)])
 
     plt.plot(slip, bond)
     plt.xlabel('slip [mm]')

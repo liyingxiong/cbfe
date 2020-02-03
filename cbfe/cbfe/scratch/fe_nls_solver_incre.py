@@ -330,7 +330,7 @@ class TLoop(HasTraits):
 
         while t_n1 <= self.t_max:
             t_n1 = t_n + self.d_t
-            print t_n1
+            print(t_n1)
             k = 0
             step_flag = 'predictor'
             d_U = np.zeros(n_dofs)
@@ -350,7 +350,7 @@ class TLoop(HasTraits):
                     break
                 k += 1
                 if k == self.k_max:
-                    print 'nonconvergence'
+                    print('nonconvergence')
                 step_flag = 'corrector'
 
             t_n = t_n1

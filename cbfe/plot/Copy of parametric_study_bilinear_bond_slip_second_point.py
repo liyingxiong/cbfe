@@ -15,7 +15,7 @@ n_dofs = ts.domain.n_dofs
 tl = TLoop(ts=ts)
 
 
-print n_dofs
+print(n_dofs)
 
 
 def predict(L_x, u, slip, bond):

@@ -3,7 +3,7 @@ Created on 13.10.2017
 
 @author: Yingxiong
 '''
-import StringIO
+import io
 import numpy as np
 import matplotlib.pyplot as plt
 from inverse.fem_inverse import TStepper, TLoop, MATSEval, FETS1D52ULRH
@@ -37,7 +37,7 @@ def calib(w_arr, pf_arr, l):
 
 
 s1 = open("D:\\download\\curve1.txt").read().replace(',', '.')
-data1 = np.loadtxt(StringIO.StringIO(s1)).T
+data1 = np.loadtxt(io.StringIO(s1)).T
 
 plt.plot(data1[0], data1[1], '--', label='original')
 

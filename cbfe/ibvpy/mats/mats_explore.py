@@ -10,10 +10,10 @@ from ibvpy.core.tloop import TLoop, TLine
 from ibvpy.core.tstepper import TStepper
 from ibvpy.mats.mats_eval import IMATSEval
 from ibvpy.mesh.fe_domain import FEDomain
-from mats1D.mats1D_explore import MATS1DExplore
-from mats1D5.mats1D5_explore import MATS1D5Explore
-from mats2D.mats2D_explore import MATS2DExplore
-from mats3D.mats3D_explore import MATS3DExplore
+from .mats1D.mats1D_explore import MATS1DExplore
+from .mats1D5.mats1D5_explore import MATS1D5Explore
+from .mats2D.mats2D_explore import MATS2DExplore
+from .mats3D.mats3D_explore import MATS3DExplore
 import numpy as np
 from util.traits.either_type import \
     EitherType

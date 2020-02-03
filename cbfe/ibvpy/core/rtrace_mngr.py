@@ -17,8 +17,8 @@ from traitsui.tabular_adapter \
     import TabularAdapter
 
 from numpy import zeros, float_
-from ibv_resource import IBVResource
-from rtrace import RTrace
+from .ibv_resource import IBVResource
+from .rtrace import RTrace
 
 #-------------------------------------------------------------------------
 # Tabular Adapter Definition
@@ -206,7 +206,7 @@ class RTraceMngr(IBVResource):
     )
 
 if __name__ == '__main__':
-    from rtrace import RTraceGraph
+    from .rtrace import RTraceGraph
     rmgr = RTraceMngr(rtrace_list=[
         RTraceGraph(name='rte x'),
         RTraceGraph(name='rte 2'),

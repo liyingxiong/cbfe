@@ -6,9 +6,9 @@ Created on 01.04.2017
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from tensile_test import CompositeTensileTest
-from cb import NonLinearCB
-from fe_nls_solver_cb import MATSEval, FETS1D52ULRH, TStepper, TLoop
+from .tensile_test import CompositeTensileTest
+from .cb import NonLinearCB
+from .fe_nls_solver_cb import MATSEval, FETS1D52ULRH, TStepper, TLoop
 from stats.misc.random_field.random_field_1D import RandomField
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
@@ -61,9 +61,9 @@ if __name__ == '__main__':
 
         w = ctt.get_w_dist(sig_c_i, z_x_i, BC_x_i, [sig_c_u])
 
-        print [np.interp(sig_c_i, load_arr1, eps_c_arr1)]
+        print([np.interp(sig_c_i, load_arr1, eps_c_arr1)])
 
-        print w
+        print(w)
 
 #     random_field = RandomField(seed=False,
 #                                lacor=1.,

@@ -256,7 +256,7 @@ class TStepper(HasTraits):
 
         # material response state variables at integration point
         sig, D = mats_eval.get_corr_pred(eps, t_n, t_n1)
-        print sig
+        print(sig)
 
         # system matrix
         self.K.reset_mtx()
@@ -298,7 +298,7 @@ class TLoop(HasTraits):
         while t_n1 <= self.t_max:
             k = 0
             step_flag = 'predictor'
-            print '================='
+            print('=================')
             while k < self.k_max:
                 R, K = ts.get_corr_pred(step_flag, U_k, d_U, t_n, t_n1)
                 F_ext = -R
@@ -307,7 +307,7 @@ class TLoop(HasTraits):
                     F_record = np.vstack((F_record, F_ext))
                     break
                 d_U = K.solve()
-                print k, d_U
+                print(k, d_U)
                 U_k += d_U
                 k += 1
                 step_flag = 'corrector'

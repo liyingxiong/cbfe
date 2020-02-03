@@ -1,37 +1,30 @@
 
-from traits.api import \
-    Array, Bool, Callable, Enum, Float, HasTraits, Interface, implements, \
-    Instance, Int, Trait, Str, Enum, Callable, List, TraitDict, Any, \
-    on_trait_change, Tuple, WeakRef, Delegate, Property, cached_property
-
-from traitsui.api import \
-    Item, View, HGroup, ListEditor, VGroup, Group
-
-from traitsui.menu import \
-    NoButtons, OKButton, CancelButton, Action, CloseAction, Menu, \
-    MenuBar, Separator
-
-from math  import \
+from math import \
     pow, fabs
-
-from numpy import \
-    array, zeros, int_, float_, ix_, dot, linspace, hstack, vstack, arange, \
-    identity
-
-from scipy.linalg import \
-    inv, det
-
 import time
 
 from ibvpy.fets.fets_eval import FETSEval
 from ibvpy.mats.mats_eval import MATSEval
-
+from numpy import \
+    array, zeros, int_, float_, ix_, dot, linspace, hstack, vstack, arange, \
+    identity
+from scipy.linalg import \
+    inv, det
+from traits.api import \
+    Array, Bool, Callable, Enum, Float,  \
+    Instance, Int, Trait, Str, Enum, Callable, List, TraitDict, Any, \
+    on_trait_change, Tuple, WeakRef, Delegate, Property, cached_property
+from traitsui.api import \
+    Item, View, HGroup, ListEditor, VGroup, Group
+from traitsui.menu import \
+    NoButtons, OKButton, CancelButton, Action, CloseAction, Menu, \
+    MenuBar, Separator
 from tvtk.api import tvtk
+
 
 #-----------------------------------------------------------------------------
 # FEQ16sub - 16 nodes subparametric quadrilateral (2D, cubic, Lagrange family)
 #-----------------------------------------------------------------------------
-
 #-------------------------------------------------------------------------
 # Element Information:
 #-------------------------------------------------------------------------
@@ -59,8 +52,6 @@ from tvtk.api import tvtk
 #                             [  1/3, 1/3 ]])
 #
 #-------------------------------------------------------------------------
-
-
 class FETS2D4Q16U(FETSEval):
     debug_on = True
 
@@ -347,8 +338,8 @@ if __name__ == '__main__':
 
     # Discretization
     domain = FEGrid(coord_max=(3., 3., 0.),
-                    shape = (2, 2),
-                    fets_eval = fets_eval)
+                    shape=(2, 2),
+                    fets_eval=fets_eval)
 
     right_dof = 2
     ts = TS(

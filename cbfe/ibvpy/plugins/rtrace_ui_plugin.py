@@ -6,7 +6,7 @@ import logging
 
 # Enthought library imports.
 #from etsproxy.mayavi.plugins.app import get_plugins, setup_logger
-from mayavi.plugins.app import setup_logger
+from .mayavi.plugins.app import setup_logger
 from traits.api import List
 from envisage.api import Plugin
 from pyface.workbench.api import Perspective, PerspectiveItem
@@ -100,8 +100,8 @@ def get_plugins():
     from envisage.plugins.python_shell.python_shell_plugin import PythonShellPlugin
     from tvtk.plugins.scene.scene_plugin import ScenePlugin
     from tvtk.plugins.scene.ui.scene_ui_plugin import SceneUIPlugin
-    from mayavi.plugins.mayavi_plugin import MayaviPlugin
-    from mayavi.plugins.mayavi_ui_plugin import MayaviUIPlugin
+    from .mayavi.plugins.mayavi_plugin import MayaviPlugin
+    from .mayavi.plugins.mayavi_ui_plugin import MayaviUIPlugin
     from envisage.developer.developer_plugin import DeveloperPlugin
     from envisage.developer.ui.developer_ui_plugin import DeveloperUIPlugin
 
@@ -125,14 +125,14 @@ def main():
 
     # Get the default mayavi plugins.
     plugins = get_plugins()
-    from rtrace_plugin import RTracePlugin
-    from rtrace_service import RTraceService
+    from .rtrace_plugin import RTracePlugin
+    from .rtrace_service import RTraceService
 
     # Inject our plugin up front so our perspective becomes the default.
     #plugins = [ RTracePlugin() ]
     plugins.insert(0, RTracePlugin())
 
-    from ibvpy_workbench_application import IBVPyWorkbenchApplication
+    from .ibvpy_workbench_application import IBVPyWorkbenchApplication
     # Create an Envisage application.
     id = 'rtrace_service.rtrace_service'
     application = IBVPyWorkbenchApplication(id=id, plugins=plugins)

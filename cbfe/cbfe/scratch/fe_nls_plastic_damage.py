@@ -437,7 +437,7 @@ class TLoop(HasTraits):
 
         while t_n1 <= self.t_max:
             t_n1 = t_n + self.d_t
-            print t_n1
+            print(t_n1)
             k = 0
             scale = 1.0
             step_flag = 'predictor'

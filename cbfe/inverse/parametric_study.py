@@ -5,7 +5,7 @@ Created on 25.02.2017
 '''
 from ibvpy.api import BCDof
 
-from fem_inverse import TStepper, TLoop
+from .fem_inverse import TStepper, TLoop
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -96,7 +96,7 @@ tl = TLoop(ts=ts, w_arr=w_arr, pf_arr=pf_arr, regularization=True)
 
 slip, bond = tl.eval()
 
-print slip, bond
+print(slip, bond)
 
 plt.plot(slip, bond)
 plt.legend(loc='best')

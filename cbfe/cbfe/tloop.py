@@ -6,7 +6,7 @@ Created on 12.01.2016
 import numpy as np
 from traits.api import implements, Int, Array, HasTraits, Instance, \
     Property, cached_property, Constant, Float, List
-from tstepper import TStepper
+from .tstepper import TStepper
 
 
 class TLoop(HasTraits):
@@ -42,7 +42,7 @@ class TLoop(HasTraits):
         sig_record = [np.zeros_like(sig)]
 
         while t_n1 <= self.t_max - self.d_t:
-            print '=================='
+            print('==================')
             t_n1 = t_n + self.d_t
             k = 0
             scale = 1.0
@@ -50,7 +50,7 @@ class TLoop(HasTraits):
             d_U = np.zeros(n_dofs)
             d_U_k = np.zeros(n_dofs)
             while k <= self.k_max:
-                print k
+                print(k)
                 # if k == self.k_max:  # handling non-convergence
                 #                     scale *= 0.5
                 # print scale
@@ -109,8 +109,8 @@ if __name__ == '__main__':
 
     U_record, F_record, sf_record, t_record, eps_record, sig_record = tl.eval()
     n_dof = 2 * ts.domain.n_active_elems + 1
-    print 'U_record', U_record[:, n_dof]
-    print 'F_record', F_record[:, n_dof]
+    print('U_record', U_record[:, n_dof])
+    print('F_record', F_record[:, n_dof])
 #     print U_record[:, n_dof]
 #     print F_record[:, n_dof]
     plt.plot(U_record[:, n_dof], F_record[:, n_dof] / 1000., marker='.')

@@ -1,5 +1,8 @@
 
 from math import pi as Pi, cos, sin, exp, sqrt as scalar_sqrt
+
+from ibvpy.mats.mats2D.mats2D_eval import MATS2DEval
+from ibvpy.mats.mats_eval import IMATSEval
 from numpy import \
     array, zeros, dot, \
     sqrt, vdot,  \
@@ -8,25 +11,24 @@ from scipy.linalg import eig, inv, norm
 from traits.api import \
     Array, Bool, Callable, Enum, Float, HasTraits, \
     Instance, Int, Trait, Range, HasTraits, on_trait_change, Event, \
-    implements, Dict, Property, cached_property, Delegate
+    provides, Dict, Property, cached_property, Delegate
 from traitsui.api import \
     Item, View, HSplit, VSplit, VGroup, Group, Spring
-from ibvpy.mats.mats2D.mats2D_eval import MATS2DEval
-from ibvpy.mats.mats_eval import IMATSEval
-import numpy as np
 from util.traits.either_type import EitherType
-from yield_face2D import IYieldFace2D, J2, DruckerPrager, Gurson, CamClay
+
+import numpy as np
+
+from .yield_face2D import IYieldFace2D, J2, DruckerPrager, Gurson, CamClay
 
 
 #---------------------------------------------------------------------------
 # Material time-step-evaluator for Scalar-Damage-Model
 #---------------------------------------------------------------------------
+@provides(IMATSEval)
 class MATS2DPlastic(MATS2DEval):
     '''
     Elastic Model.
     '''
-
-    implements(IMATSEval)
 
     #-------------------------------------------------------------------------
     # Parameters of the numerical algorithm (integration)
@@ -184,7 +186,7 @@ class MATS2DPlastic(MATS2DEval):
         int_count = 1
         while f_trial > self.tolerance or norm(R_k) > self.tolerance:
             if int_count > self.max_iter:
-                print "Maximal number of iteration reached"
+                print("Maximal number of iteration reached")
                 break
             diff1s = self.yf.get_diff1s(
                 eps_app_eng, self.E, self.nu, sctx)
@@ -279,13 +281,14 @@ class MATS2DPlastic(MATS2DEval):
                 'sig_norm': self.get_sig_norm,
                 'eps_p': self.get_eps_p}
 
+
 if __name__ == '__main__':
     #-------------------------------------------------------------------------
     # Example using the mats2d_explore
     #-------------------------------------------------------------------------
     from ibvpy.api import RTraceGraph
     from ibvpy.mats.mats2D.mats2D_explore import MATS2DExplore
-    from yield_face2D import J2
+    from .yield_face2D import J2
     mats2D_explore = \
         MATS2DExplore(mats2D_eval=MATS2DPlastic(yf=J2()),
                       rtrace_list=[RTraceGraph(name='strain 0 - stress 0',

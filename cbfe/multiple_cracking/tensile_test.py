@@ -3,14 +3,16 @@ Created on 19.03.2017
 
 @author: Yingxiong
 '''
-from traits.api import implements, Int, Array, HasTraits, Instance, \
-    Property, cached_property, Constant, Float, List
-from cb import NonLinearCB
-import numpy as np
 from scipy.interpolate import interp1d
 from scipy.optimize import brentq, minimize_scalar, fmin, brute, newton
-import matplotlib.pyplot as plt
 from stats.misc.random_field.random_field_1D import RandomField
+from traits.api import Int, Array, HasTraits, Instance, \
+    Property, cached_property, Constant, Float, List
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+from .cb import NonLinearCB
 
 
 class CompositeTensileTest(HasTraits):
@@ -73,7 +75,7 @@ class CompositeTensileTest(HasTraits):
     def get_sig_c_z(self, sig_mu, z, BC, sig_c_i_1):
         '''Determine the composite remote stress initiating a crack 
         at position z'''
-        fun = lambda sig_c: sig_mu - self.cb.get_sig_m_z(z, BC, sig_c)
+        def fun(sig_c): return sig_mu - self.cb.get_sig_m_z(z, BC, sig_c)
         try:
             # search the cracking stress level between zero and ultimate
             # composite stress
@@ -114,7 +116,7 @@ class CompositeTensileTest(HasTraits):
         self.y.append(self.x[idx_0])
         sig_c_0 = self.sig_mu_x[idx_0] * self.cb.E_c / self.cb.E_m
         sig_c_lst.append(sig_c_0)
-        print self.sig_mu_x[idx_0], self.x[idx_0]
+        print(self.sig_mu_x[idx_0], self.x[idx_0])
         z_x_lst.append(np.array(self.z_x))
         BC_x_lst.append(np.array(self.BC_x))
 
@@ -123,17 +125,17 @@ class CompositeTensileTest(HasTraits):
             sig_c_i, y_i = self.get_sig_c_i(sig_c_lst[-1])
             if sig_c_i >= self.strength or sig_c_i == 1e6:
                 break
-            print sig_c_i, y_i
+            print(sig_c_i, y_i)
             self.y.append(y_i)
-            print 'number of cracks:', len(self.y)
+            print('number of cracks:', len(self.y))
             sig_c_lst.append(sig_c_i)
             z_x_lst.append(np.array(self.z_x))
             BC_x_lst.append(np.array(self.BC_x))
 #             self.save_cracking_history(sig_c_i, z_x_lst, BC_x_lst)
 #             print 'strength', self.strength
-        print 'cracking history determined'
+        print('cracking history determined')
         sig_c_u = self.strength
-        print sig_c_u
+        print(sig_c_u)
         n_cracks = len(self.y)
         self.y = []
         return np.array(sig_c_lst), np.array(z_x_lst), BC_x_lst, sig_c_u, n_cracks

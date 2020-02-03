@@ -1,49 +1,40 @@
 
-from traits.api import \
-    Array, Bool, Callable, Enum, Float, HasTraits, Interface, implements, \
-    Instance, Int, Trait, Str, List, TraitDict, Any, \
-    on_trait_change, Tuple, WeakRef, Delegate, Property, cached_property, Dict, \
-    Class
-
-from traitsui.api import \
-    View, Item, Group
-
-from numpy import \
-    array, zeros, float_, dot, hstack, arange, argmin, broadcast_arrays, c_, \
-    zeros_like
-
-from scipy.linalg import \
-    det
-
-from scipy.spatial.distance import \
-    cdist
+from functools import reduce
+import types
 
 from ibvpy.core.i_tstepper_eval import \
     ITStepperEval
-
-from ibvpy.core.tstepper_eval import \
-    TStepperEval
-
-from ibvpy.mats.mats_eval import \
-    IMATSEval
-
-from ibvpy.dots.dots_eval import \
-    DOTSEval
-
 from ibvpy.core.rtrace_eval import \
     RTraceEval
-
-from i_fets_eval import IFETSEval
+from ibvpy.core.tstepper_eval import \
+    TStepperEval
+from ibvpy.dots.dots_eval import \
+    DOTSEval
+from ibvpy.mats.mats_eval import \
+    IMATSEval
+from numpy import \
+    array, zeros, float_, dot, hstack, arange, argmin, broadcast_arrays, c_, \
+    zeros_like
+from scipy.linalg import \
+    det
+from scipy.spatial.distance import \
+    cdist
+from traits.api import \
+    Array, Bool, Callable, Enum, Float, HasTraits, Interface, provides, \
+    Instance, Int, Trait, Str, List, TraitDict, Any, \
+    on_trait_change, Tuple, WeakRef, \
+    Type, Delegate, Property, cached_property, Dict
+from traitsui.api import \
+    View, Item, Group
 
 from tvtk.tvtk_classes import tvtk_helper
 
-import types
+from .i_fets_eval import IFETSEval
+
 
 #-------------------------------------------------------------------
 # Numpy extension
 #-------------------------------------------------------------------
-
-
 def oriented_3d_array(arr, axis):
     '''In order to use the indices as spatial locators
     the array of gauss points is augmented with newaxes into 3D
@@ -63,11 +54,10 @@ def oriented_3d_array(arr, axis):
 #-------------------------------------------------------------------
 
 
+@provides(IFETSEval)
 class FETSEval(TStepperEval):
 
-    implements(IFETSEval)
-
-    dots_class = Class(DOTSEval)
+    dots_class = Type(DOTSEval)
 
     dof_r = Array('float_',
                   desc='Local coordinates of nodes included in the field ansatz')
@@ -236,7 +226,7 @@ class FETSEval(TStepperEval):
         # broadcast the values to construct all combinations of all gauss point
         # coordinates.
         #
-        x, y, z = apply(broadcast_arrays, gp_coords)
+        x, y, z = broadcast_arrays(*gp_coords)
         return x, y, z
 
     gp_w_grid = Property(depends_on='ngp_r,ngp_s,ngp_t')
@@ -321,10 +311,10 @@ class FETSEval(TStepperEval):
         r = []
         ix = []
         for dim_idx, ip_idx in enumerate(ip_idx_list):
-            if isinstance(ip_idx, types.IntType):
+            if isinstance(ip_idx, int):
                 w.append(1.0)
                 r.append(minmax[ip_idx](self.dof_r[:, dim_idx]))
-            elif isinstance(ip_idx, types.SliceType):
+            elif isinstance(ip_idx, slice):
                 # if there is a slice - put the array in the corresponding dimension
                 # - only the full slide - i.e. slice(None,None,None)
                 #   is allowed
@@ -332,10 +322,10 @@ class FETSEval(TStepperEval):
                 w.append(oriented_3d_array(self._GP_WEIGHTS[n_gp], dim_idx))
                 r.append(oriented_3d_array(self._GP_COORDS[n_gp], dim_idx))
                 ix.append(dim_idx)
-        r_grid = apply(broadcast_arrays, r)
+        r_grid = broadcast_arrays(*r)
         r_c = c_[tuple([r.flatten() for r in r_grid])]
         w_grid = reduce(lambda x, y: x * y, w)
-        if isinstance(w_grid, types.FloatType):
+        if isinstance(w_grid, float):
             w_grid = array([w_grid], dtype='float_')
         else:
             w_grid = w_grid.flatten()
@@ -352,7 +342,8 @@ class FETSEval(TStepperEval):
     @cached_property
     def _get_vtk_r_arr(self):
         if len(self.vtk_r) == 0:
-            raise ValueError, 'Cannot generate plot, no vtk_r specified in fets_eval'
+            raise ValueError(
+                'Cannot generate plot, no vtk_r specified in fets_eval')
         return array(self.vtk_r)
 
     def get_vtk_r_glb_arr(self, X_mtx, r_mtx=None):
@@ -751,7 +742,7 @@ class FETSEval(TStepperEval):
         RTraceEval dictionary with standard field variables.
         '''
         rte_dict = self._debug_rte_dict()
-        for key, v_eval in self.mats_eval.rte_dict.items():
+        for key, v_eval in list(self.mats_eval.rte_dict.items()):
 
             # add the eval into the loop.
             #

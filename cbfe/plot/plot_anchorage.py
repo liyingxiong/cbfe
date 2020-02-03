@@ -3,7 +3,7 @@ Created on 13.09.2017
 
 @author: Yingxiong
 '''
-from plot_all_bond_r4 import x, y, L_arr, predict_max_limited_slip
+from .plot_all_bond_r4 import x, y, L_arr, predict_max_limited_slip
 from matplotlib import pyplot as plt
 import numpy as np
 

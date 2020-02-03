@@ -3,15 +3,15 @@ Created on 12.01.2016
 
 @author: Yingxiong
 '''
-from matseval import MATSEval
-from fets1d52ulrh import FETS1D52ULRH
-from tstepper import TStepper
-from tloop import TLoop
+from .matseval import MATSEval
+from .fets1d52ulrh import FETS1D52ULRH
+from .tstepper import TStepper
+from .tloop import TLoop
 from matplotlib import pyplot as plt
 from ibvpy.api import BCDof
 from traits.api import HasTraits, Property, Instance, cached_property, Str, Button, Range, on_trait_change, Array, List, Any
 from matplotlib.figure import Figure
-from scratch.mpl_figure_editor import MPLFigureEditor
+from .scratch.mpl_figure_editor import MPLFigureEditor
 from traitsui.api import View, Item, Group, HSplit, Handler, InstanceEditor, UItem, VGroup
 import numpy as np
 

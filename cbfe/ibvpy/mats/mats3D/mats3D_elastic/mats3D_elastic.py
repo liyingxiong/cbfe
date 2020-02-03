@@ -1,33 +1,28 @@
 
+from ibvpy.mats.mats3D.mats3D_eval import \
+    MATS3DEval
+from ibvpy.mats.mats_eval import \
+    IMATSEval
+from mathkit.mfn.mfn_line.mfn_line import MFnLineArray
 from traits.api import \
     Array, Bool, Callable, Enum, Float, HasTraits, \
     Instance, Int, Trait, Range, HasTraits, on_trait_change, Event, \
-    implements, Dict, Property, cached_property, Delegate
-
+    provides, Dict, Property, cached_property, Delegate
 from traitsui.api import \
     Item, View, HSplit, VSplit, VGroup, Group, Spring
-from mathkit.mfn.mfn_line.mfn_line import MFnLineArray
 
 import numpy as np
 
-from ibvpy.mats.mats_eval import \
-    IMATSEval
-
-from ibvpy.mats.mats3D.mats3D_eval import \
-    MATS3DEval
 
 #---------------------------------------------------------------------------
 # Material time-step-evaluator for Scalar-Damage-Model
 #---------------------------------------------------------------------------
-
-
+@provides(IMATSEval)
 class MATS3DElastic(MATS3DEval):
 
     '''
     Elastic Model.
     '''
-
-    implements(IMATSEval)
 
     #-------------------------------------------------------------------------
     # Parameters of the numerical algorithm (integration)
@@ -54,8 +49,8 @@ class MATS3DElastic(MATS3DEval):
 
     def get_D_el(self, E, nu):
         D_mtx = np.zeros((6, 6), dtype='float_')
-        print 'E', E
-        print 'nu', nu
+        print('E', E)
+        print('nu', nu)
         D_mtx[0, 0] = E / (1 + nu) + E * nu / (1 + nu) / (1 - 2 * nu)
         D_mtx[0, 1] = E * nu / (1 + nu) / (1 - 2 * nu)
         D_mtx[0, 2] = E * nu / (1 + nu) / (1 - 2 * nu)
@@ -114,7 +109,7 @@ class MATS3DElastic(MATS3DEval):
         if len(eps_app_eng.shape) >= len(self.D_el.shape):
             D_el = self.D_el[np.newaxis, ...]
 
-        return  sigma, D_el
+        return sigma, D_el
 #
 #        print self.D_el
 #        print eps_app_eng
@@ -136,35 +131,38 @@ class MATS3DElastic(MATS3DEval):
     rte_dict = Trait(Dict)
 
     def _rte_dict_default(self):
-        return {'sig_app' : self.get_sig_app,
-                'eps_app'  : self.get_eps_app,
-                'max_principle_sig' : self.get_max_principle_sig,
-                'strain_energy' : self.get_strain_energy                 }
+        return {'sig_app': self.get_sig_app,
+                'eps_app': self.get_eps_app,
+                'max_principle_sig': self.get_max_principle_sig,
+                'strain_energy': self.get_strain_energy}
 
 
 class MATS3DElasticNL(MATS3DElastic):
-    #---------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------
     # Piece wise linear stress strain curve
-    #---------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------
     _stress_strain_curve = Instance(MFnLineArray)
+
     def __stress_strain_curve_default(self):
-        return MFnLineArray(ydata=[ 0., self.E ],
-                            xdata=[ 0., 1.])
+        return MFnLineArray(ydata=[0., self.E],
+                            xdata=[0., 1.])
+
     @on_trait_change('E')
     def reset_stress_strain_curve(self):
-        self._stress_strain_curve = MFnLineArray(ydata=[ 0., self.E ],
-                                                 xdata=[ 0., 1.])
+        self._stress_strain_curve = MFnLineArray(ydata=[0., self.E],
+                                                 xdata=[0., 1.])
 
     stress_strain_curve = Property
+
     def _get_stress_strain_curve(self):
         return self._stress_strain_curve
 
     def _set_stress_strain_curve(self, curve):
         self._stress_strain_curve = curve
 
-    #-----------------------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------
     # Evaluation - get the corrector and predictor
-    #-----------------------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------
 
     def get_corr_pred(self, sctx, eps_app_eng, d_eps, tn, tn1):
         '''
@@ -173,4 +171,4 @@ class MATS3DElasticNL(MATS3DElastic):
         '''
         D_el = self.get_D_el(eps_app_eng, tn1)
         sigma = np.dot(D_el, eps_app_eng)
-        return  sigma, self.D_el
+        return sigma, self.D_el

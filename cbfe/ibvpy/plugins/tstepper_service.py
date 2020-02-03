@@ -9,10 +9,10 @@ from ibvpy.plugins.mayavi_engine import get_engine
 from mathkit.matrix_la.dense_mtx import DenseMtx
 from mathkit.matrix_la.sys_mtx_array import SysMtxArray
 from mathkit.matrix_la.sys_mtx_assembly import SysMtxAssembly
-from mayavi.filters.api import PolyDataNormals
-from mayavi.filters.api import WarpScalar
-from mayavi.modules.api import Surface
-from mayavi.sources.api import VTKDataSource
+from .mayavi.filters.api import PolyDataNormals
+from .mayavi.filters.api import WarpScalar
+from .mayavi.modules.api import Surface
+from .mayavi.sources.api import VTKDataSource
 from numpy import ndarray, max, zeros, array
 from traits.api import \
     HasTraits, Instance
@@ -87,7 +87,7 @@ class TreeHandler (Handler):
             U_k = tstepper.U_k
             d_U = tstepper.d_U
             K, R = tstepper.eval('predictor', U_k, d_U, 0, 0)
-            print 'constraints'
+            print('constraints')
             K.print_constraints()
             K.apply_constraints(R)
         else:

@@ -22,7 +22,7 @@ for file_name in test_files:
 
 t = np.diff(sig_arr) / np.diff(eps_arr)
 
-print np.interp(0.006, eps_arr, sig_arr)
+print(np.interp(0.006, eps_arr, sig_arr))
 
 
 t_m = t[241]

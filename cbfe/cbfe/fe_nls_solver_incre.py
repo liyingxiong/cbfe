@@ -1,15 +1,17 @@
-from traits.api import implements, Int, Array, HasTraits, Instance, \
-    Property, cached_property, Constant, Float, List
+import sys
+
 from ibvpy.api import BCDof
 from ibvpy.fets.fets_eval import FETSEval, IFETSEval
 from ibvpy.mats.mats1D import MATS1DElastic
 from ibvpy.mats.mats1D5.mats1D5_bond import MATS1D5Bond
 from ibvpy.mesh.fe_grid import FEGrid
 from mathkit.matrix_la.sys_mtx_assembly import SysMtxAssembly
+from scipy.interpolate import interp1d
+from traits.api import provides, Int, Array, HasTraits, Instance, \
+    Property, cached_property, Constant, Float, List
+
 import matplotlib.pyplot as plt
 import numpy as np
-import sys
-from scipy.interpolate import interp1d
 
 
 class MATSEval(HasTraits):
@@ -48,24 +50,23 @@ class MATSEval(HasTraits):
         D = np.zeros((n_e, n_ip, 3, 3))
         D[:, :, 0, 0] = self.E_m
         D[:, :, 2, 2] = self.E_f
-        D[:, :, 1, 1] = self.G(eps[:,:, 1])
+        D[:, :, 1, 1] = self.G(eps[:, :, 1])
 
         d_sig = np.einsum('...st,...t->...s', D, d_eps)
         sig += d_sig
-        sig[:, :, 1] = self.b_s_law(eps[:,:, 1])
+        sig[:, :, 1] = self.b_s_law(eps[:, :, 1])
 
         return sig, D
 
     n_s = Constant(3)
 
 
+@provides(IFETSEval)
 class FETS1D52ULRH(FETSEval):
 
     '''
     Fe Bar 2 nodes, deformation
     '''
-
-    implements(IFETSEval)
 
     debug_on = True
 
@@ -231,7 +232,7 @@ class TStepper(HasTraits):
 
         # shape function for the unknowns
         # [ d, n, i]
-        Nr = 0.5 * (1. + geo_r[:, :, None] * r_ip[None,:])
+        Nr = 0.5 * (1. + geo_r[:, :, None] * r_ip[None, :])
         dNr = 0.5 * geo_r[:, :, None] * np.array([1, 1])
 
         # [ i, n, d ]
@@ -245,9 +246,9 @@ class TStepper(HasTraits):
         B_N_n_rows, B_N_n_cols, N_idx = [1, 1], [0, 1], [0, 0]
         B_dN_n_rows, B_dN_n_cols, dN_idx = [0, 2], [0, 1], [0, 0]
         B_factors = np.array([-1, 1], dtype='float_')
-        B[:, :,:, B_N_n_rows, B_N_n_cols] = (B_factors[None, None,:] *
+        B[:, :, :, B_N_n_rows, B_N_n_cols] = (B_factors[None, None, :] *
                                               Nx[:, :, N_idx])
-        B[:, :,:, B_dN_n_rows, B_dN_n_cols] = dNx[:,:,:, dN_idx]
+        B[:, :, :, B_dN_n_rows, B_dN_n_cols] = dNx[:, :, :, dN_idx]
 
         return B
 
@@ -356,18 +357,21 @@ class TLoop(HasTraits):
                     U_record = np.vstack((U_record, U_k))
                     sf_record = np.vstack((sf_record, sig[:, :, 1].flatten()))
 
-                    sig_m_record = np.vstack((sig_m_record, sig[:, :, 0].flatten()))
-                    sig_f_record = np.vstack((sig_f_record, sig[:, :, 2].flatten()))
+                    sig_m_record = np.vstack(
+                        (sig_m_record, sig[:, :, 0].flatten()))
+                    sig_f_record = np.vstack(
+                        (sig_f_record, sig[:, :, 2].flatten()))
 
                     break
                 k += 1
                 if k == self.k_max:
-                    print self.ts.mats_eval.bond
-                    print 'nonconvergence'
+                    print(self.ts.mats_eval.bond)
+                    print('nonconvergence')
                 step_flag = 'corrector'
 
             t_n = t_n1
         return U_record, F_record, sf_record, sig_m_record, sig_f_record
+
 
 if __name__ == '__main__':
 

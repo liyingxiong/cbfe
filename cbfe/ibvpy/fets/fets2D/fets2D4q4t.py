@@ -5,7 +5,7 @@ from numpy import \
 from scipy.linalg import \
     inv
 from traits.api import \
-    Array, Bool, Callable, Enum, Float, HasTraits, Interface, implements, \
+    Array, Bool, Callable, Enum, Float, HasTraits, Interface, \
     Instance, Int, Trait, Str, Enum, Callable, List, TraitDict, Any, \
     on_trait_change, Tuple, WeakRef, Delegate, Property, cached_property
 
@@ -111,7 +111,7 @@ def run_example():
     from ibvpy.api import BCDofGroup
     fets_eval = FETS2D4Q4T(mats_eval=MATS2DConduction(k=1.))
 
-    print fets_eval.vtk_node_cell_data
+    print(fets_eval.vtk_node_cell_data)
 
     from ibvpy.mesh.fe_grid import FEGrid
     from ibvpy.mesh.fe_refinement_grid import FERefinementGrid
@@ -145,7 +145,7 @@ def run_example():
                   ]
                   )
 
-    print tstepper.setup()
+    print(tstepper.setup())
     return
     # Add the time-loop control
     tloop = TLoop(tstepper=tstepper, debug=False,

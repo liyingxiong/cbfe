@@ -5,7 +5,7 @@ Created on 09.05.2017
 '''
 import numpy as np
 import matplotlib.pyplot as plt
-import StringIO
+import io
 
 '''
 Created on 19.01.2016
@@ -60,8 +60,8 @@ class MATSEval(HasTraits):
         try:
             D[:,:, 1, 1] = self.G(eps[:,:, 1])
         except:
-            print np.array(self.slip)
-            print eps[:,:, 1]
+            print(np.array(self.slip))
+            print(eps[:,:, 1])
             sys.exit()
         d_sig = np.einsum('...st,...t->...s', D, d_eps)
         sig += d_sig
@@ -372,16 +372,16 @@ class TLoop(HasTraits):
                 d_U += d_U_k
                 k += 1
                 if k == self.k_max:
-                    print tau_i
-                    print np.linalg.norm(R)
+                    print(tau_i)
+                    print(np.linalg.norm(R))
                     raise Exception('Non convergence')
                 step_flag = 'corrector'
                 if np.linalg.norm(R) < self.tolerance:
                     #                     print F_ext[-1]
                     U += d_U
                     break
-        print U[1]
-        print '##############'
+        print(U[1])
+        print('##############')
         return F_ext[-1] - np.interp(U[1], self.w_free, self.f_free)
 #         return F_ext[-1] - np.interp(U[-1], self.w_arr, self.pf_arr)
 
@@ -407,7 +407,7 @@ class TLoop(HasTraits):
                 d_U += d_U_k
                 k += 1
                 if k == self.k_max:
-                    print np.linalg.norm(R)
+                    print(np.linalg.norm(R))
                     raise Exception('Non convergence')
                 step_flag = 'corrector'
                 if np.linalg.norm(R) < self.tolerance:
@@ -445,20 +445,20 @@ class TLoop(HasTraits):
 
             self.ts.mats_eval.slip.append(self.w_arr[i])
             self.ts.mats_eval.bond.append(0.)
-            print self.w_arr[i]
+            print(self.w_arr[i])
             tau = lambda tau_i: self.pf(
                 tau_i, self.w_arr[i], eps1, sig1)
             try:
                 tau_i = brentq(tau, 0.00001, 1000., xtol=1e-16)
             except:
-                print tau(0.1)
-                print tau(200)
+                print(tau(0.1))
+                print(tau(200))
                 plt.plot(self.ts.mats_eval.slip, self.ts.mats_eval.bond)
                 plt.xlabel('slip [mm]')
                 plt.ylabel('bond [N/mm]')
                 plt.show()
-            print tau_i
-            print '============='
+            print(tau_i)
+            print('=============')
             self.ts.mats_eval.bond[-1] = tau_i
 #
             eps1, sig1 = self.update_eps_sig(self.w_arr[i], eps1, sig1)
@@ -534,10 +534,10 @@ if __name__ == '__main__':
     slip, bond = tl.eval()
 
     np.set_printoptions(precision=4)
-    print 'slip'
-    print [np.array(slip)]
-    print 'bond'
-    print [np.array(bond)]
+    print('slip')
+    print([np.array(slip)])
+    print('bond')
+    print([np.array(bond)])
 
     plt.plot(slip, bond)
     plt.xlabel('slip [mm]')

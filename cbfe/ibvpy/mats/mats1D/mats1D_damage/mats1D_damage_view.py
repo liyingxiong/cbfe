@@ -41,7 +41,7 @@ from scipy.optimize import brentq, newton
 from util.traits.editors.mpl_figure_editor import MPLFigureEditor
 from matplotlib.figure import Figure
 import string
-from mats1D_damage import MATS1DDamage
+from .mats1D_damage import MATS1DDamage
 
 class MATS1DDamageView( ModelView ):
     '''

@@ -11,7 +11,7 @@ from mathkit.matrix_la.sys_mtx_assembly import SysMtxAssembly
 from numpy import \
     zeros, float_, ix_, meshgrid
 from traits.api import \
-    Array, Bool, Callable, Enum, Float, HasTraits, Interface, implements, \
+    Array, Bool, Callable, Enum, Float, HasTraits, Interface, provides, \
     Instance, Int, Trait, Str, Enum, Callable, List, TraitDict, Any, \
     on_trait_change, Tuple, WeakRef, Delegate, Property, cached_property, Dict
 from traitsui.api import \
@@ -19,16 +19,16 @@ from traitsui.api import \
 from traitsui.menu import \
     OKButton, CancelButton
 
-from dots_eval import DOTSEval
+from .dots_eval import DOTSEval
 
 
 #-----------------------------------------------------------------------------
 # Integrator for a simple 1D domain.
 #-----------------------------------------------------------------------------
+@provides(ITStepperEval)
 class DOTSListEval(TStepperEval):
     '''Domain with uniform FE-time-step-eval.
     '''
-    implements(ITStepperEval)
 
     sdomain = WeakRef('ibvpy.mesh.fe_domain.FEDomain')
 
@@ -54,7 +54,7 @@ class DOTSListEval(TStepperEval):
         return zeros(n_dofs, 'float_')
 
     def setup(self, sctx):
-        print 'DEPRECATED CALL TO SETUP'
+        print('DEPRECATED CALL TO SETUP')
 
     def get_state_array_size(self):
         return 0
@@ -93,7 +93,7 @@ class DOTSListEval(TStepperEval):
         rte_keys = []
         for dots_eval in self.dots_list:
             dots_rte_dict = {}
-            for key, eval in dots_eval.rte_dict.items():
+            for key, eval in list(dots_eval.rte_dict.items()):
                 # add the mapping here
                 #
                 if key not in rte_keys:
@@ -162,7 +162,7 @@ if __name__ == '__main__':
     tloop = TLoop(tstepper=ts,
                   tline=TLine(min=0.0, step=1, max=1.0))
 
-    print tloop.eval()
-    print ts.F_int
-    print 'resulting force'
-    print ts.rtrace_list[0].trace.ydata
+    print(tloop.eval())
+    print(ts.F_int)
+    print('resulting force')
+    print(ts.rtrace_list[0].trace.ydata)

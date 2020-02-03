@@ -238,7 +238,7 @@ def example():
     tloop = TLoop(tstepper=ts, KMAX=30, debug=False,
                   tline=TLine(min=0.0, step=0.1, max=1.0))
 
-    print tloop.eval()
+    print(tloop.eval())
     # Put the whole stuff into the simulation-framework to map the
     # individual pieces of definition into the user interface.
     #

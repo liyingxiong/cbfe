@@ -1,45 +1,43 @@
 
-from traits.api import \
-    HasTraits, List, Array, Property, cached_property, \
-    Instance, Trait, Button, on_trait_change, Tuple, \
-    Int, Float, implements, WeakRef, Bool, Any, Interface, \
-    DelegatesTo, Bool, Callable
-
-from traitsui.api import \
-    View, Item, Group
+from math import sin
 
 from ibvpy.core.i_sdomain import \
     ISDomain
-
 from ibvpy.core.sdomain import \
     SDomain
-
+from ibvpy.plugins.mayavi_util.pipelines import \
+    MVPolyData, MVPointLabels, MVStructuredGrid
+from mathkit.level_set.level_set import ILevelSetFn, SinLSF, PlaneLSF, ElipseLSF
 from numpy import \
     array, unique, min, max, mgrid, ogrid, c_, alltrue, repeat, ix_, \
     arange, ones, zeros, multiply, sort, index_exp, frompyfunc, where, \
     zeros_like, sign, sometrue, delete, ma
+from traits.api import \
+    HasTraits, List, Array, Property, cached_property, \
+    Instance, Trait, Button, on_trait_change, Tuple, \
+    Int, Float, WeakRef, Bool, Any, Interface, \
+    DelegatesTo, Bool, Callable, provides
+from traitsui.api import \
+    TabularEditor
+from traitsui.api import \
+    View, Item, Group
+from traitsui.tabular_adapter import \
+    TabularAdapter
 
-from math import sin
+from .cell_array import CellView, ICellView, CellArray, ICellArraySource
+from .cell_grid import CellGrid
+from .cell_grid_slice import CellGridSlice
 
-from ibvpy.plugins.mayavi_util.pipelines import \
-    MVPolyData, MVPointLabels, MVStructuredGrid
-
-from cell_grid import CellGrid
-from cell_array import CellView, ICellView, CellArray, ICellArraySource
-
-from mathkit.level_set.level_set import ILevelSetFn, SinLSF, PlaneLSF, ElipseLSF
 
 #--------------------------------------------------------------------------
 # GeoCellGrid
 #--------------------------------------------------------------------------
-
-
+@provides(ICellArraySource)
 class GeoCellGrid(SDomain):
 
     '''
     Get an array with element node coordinates
     '''
-    implements(ICellArraySource)
     cell_grid = Instance(CellGrid)
 
     #-------------------------------------------------------------------------
@@ -251,8 +249,6 @@ class GeoCellGrid(SDomain):
                        height=0.5,
                        width=0.5)
 
-from cell_grid_slice import CellGridSlice
-
 
 class GeoGridSlice(CellGridSlice):
 
@@ -281,10 +277,6 @@ class GeoGridSlice(CellGridSlice):
         return self.geo_grid.elem_x_map[ix_(self.elems, self.cell_grid.grid_cell[idx2])]
 
 #-- Tabular Adapter Definition -------------------------------------------
-from traitsui.tabular_adapter import \
-    TabularAdapter
-from traitsui.api import \
-    TabularEditor
 
 
 class CoordTabularAdapter (TabularAdapter):
@@ -314,6 +306,7 @@ class CoordTabularAdapter (TabularAdapter):
 
 #-- Tabular Editor Definition --------------------------------------------
 
+
 coord_tabular_editor = TabularEditor(
     adapter=CoordTabularAdapter(),
 )
@@ -323,11 +316,11 @@ coord_tabular_editor = TabularEditor(
 #-----------------------------------------------------------------------
 
 
+@provides(ICellView)
 class GeoCellView(CellView):
 
     '''View a single cell instance.
     '''
-    implements(ICellView)
 
     cell_X_arr = Array
 
@@ -388,7 +381,7 @@ class GeoCellView(CellView):
 
 if __name__ == '__main__':
 
-    from cell_spec import CellSpec, GridCell
+    from .cell_spec import CellSpec, GridCell
 
     def demo_1d():
 
@@ -397,19 +390,20 @@ if __name__ == '__main__':
                                                                   [0.0],
                                                                   [1.0]],
                                                      ),
-                             shape=(5,), coord_max = [1.])
+                             shape=(5,), coord_max=[1.])
         geo_grid = GeoCellGrid(cell_grid=cell_grid)
-        ls_function = lambda x: x - 0.5
 
-        print 'vertex grid'
-        print cell_grid.vertex_X_grid
-        print 'cell_grid'
-        print cell_grid.cell_idx_grid
+        def ls_function(x): return x - 0.5
 
-        print 'intersected'
-        print geo_grid.get_intersected_cells(ls_function)
-        print 'negative'
-        print geo_grid.get_negative_cells(ls_function)
+        print('vertex grid')
+        print(cell_grid.vertex_X_grid)
+        print('cell_grid')
+        print(cell_grid.cell_idx_grid)
+
+        print('intersected')
+        print(geo_grid.get_intersected_cells(ls_function))
+        print('negative')
+        print(geo_grid.get_negative_cells(ls_function))
 
     def demo_2d():
 
@@ -421,50 +415,51 @@ if __name__ == '__main__':
                                                                   [1, 0],
                                                                   [1, 1]]
                                                      ),
-                             shape=(5, 2), coord_max = [1., 1.])
+                             shape=(5, 2), coord_max=[1., 1.])
         geo_grid = GeoCellGrid(cell_grid=cell_grid)
 
-        print 'vertex_X_grid',
-        print geo_grid.cell_grid.vertex_X_grid
+        print('vertex_X_grid', end=' ')
+        print(geo_grid.cell_grid.vertex_X_grid)
 
-        ls_function = lambda x, y: x - 0.5
-        ls_mask_function = lambda x, y: y <= 0.75
+        def ls_function(x, y): return x - 0.5
 
-        print 'cell_grid'
-        print cell_grid.cell_idx_grid
+        def ls_mask_function(x, y): return y <= 0.75
 
-        print 'intersected'
-        print geo_grid.get_intersected_cells(ls_function, ls_mask_function)
-        print 'negative'
-        print geo_grid.get_negative_cells(ls_function)
+        print('cell_grid')
+        print(cell_grid.cell_idx_grid)
+
+        print('intersected')
+        print(geo_grid.get_intersected_cells(ls_function, ls_mask_function))
+        print('negative')
+        print(geo_grid.get_negative_cells(ls_function))
 
     def demo_3d():
 
         geo_grid = GeoCellGrid(cell_grid=CellGrid(shape=(2, 1, 1),
                                                   coord_max=[3., 3., 3.]))
 
-        print 'elem_X_map'
-        print geo_grid.elem_X_map
-        print 'cell_grid_shape'
-        print geo_grid.cell_grid.cell_idx_grid.shape
-        print 'index'
-        print geo_grid.cell_grid.cell_idx_grid[0, 0, 0]
-        print 'first element - direct access'
-        print geo_grid.elem_X_map[0]
-        print 'first element - mapped access'
-        print geo_grid[0, 0, 0]
+        print('elem_X_map')
+        print(geo_grid.elem_X_map)
+        print('cell_grid_shape')
+        print(geo_grid.cell_grid.cell_idx_grid.shape)
+        print('index')
+        print(geo_grid.cell_grid.cell_idx_grid[0, 0, 0])
+        print('first element - direct access')
+        print(geo_grid.elem_X_map[0])
+        print('first element - mapped access')
+        print(geo_grid[0, 0, 0])
 
-        print 'x_max dofs'
-        print geo_grid[:, -1, :, -1].elems
+        print('x_max dofs')
+        print(geo_grid[:, -1, :, -1].elems)
 
-        print 'X_grid'
-        print geo_grid[:, -1, :, -1].point_x_arr
+        print('X_grid')
+        print(geo_grid[:, -1, :, -1].point_x_arr)
 
-        print 'X_arr'
-        print geo_grid[:, -1, :, -1].point_X_arr
+        print('X_arr')
+        print(geo_grid[:, -1, :, -1].point_X_arr)
 
-        print 'point_grid'
-        print geo_grid.point_X_grid
+        print('point_grid')
+        print(geo_grid.point_X_grid)
 
     demo_1d()
     demo_2d()

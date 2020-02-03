@@ -4,12 +4,12 @@ Created on 07.01.2016
 @author: Yingxiong
 '''
 import numpy as np
-from fe_nls_plastic_damage import MATSEval, FETS1D52ULRH, TStepper, TLoop
+from .fe_nls_plastic_damage import MATSEval, FETS1D52ULRH, TStepper, TLoop
 from matplotlib import pyplot as plt
 from ibvpy.api import BCDof
 from traits.api import HasTraits, Property, Instance, cached_property, Str, Button, Range, on_trait_change, Array, List
 from matplotlib.figure import Figure
-from mpl_figure_editor import MPLFigureEditor
+from .mpl_figure_editor import MPLFigureEditor
 from traitsui.api import View, Item, Group, HSplit, Handler, InstanceEditor, UItem, VGroup
 
 

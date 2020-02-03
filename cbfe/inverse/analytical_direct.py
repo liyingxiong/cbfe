@@ -61,7 +61,7 @@ for i in np.arange(1, 8):
         else:
             d_x_bar = lambda q: d_x_bar_l0(q, m_arr[1], T_arr[1]) - L
             p_f.append(newton(d_x_bar, 0))
-        print p_f
+        print(p_f)
     else:
         def e_L(q_i):
             j = i
@@ -92,4 +92,4 @@ for i in np.arange(1, 8):
         solve = lambda q_i: e_L(q_i) - L
 
         p_f.append(newton(solve, 0., maxiter=5000000))
-        print [np.array(p_f) / gamma]
+        print([np.array(p_f) / gamma])

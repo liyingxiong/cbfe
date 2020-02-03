@@ -3,7 +3,7 @@ Created on 10.05.2017
 
 @author: Yingxiong
 '''
-import StringIO
+import io
 
 from ibvpy.api import BCDof
 from scipy.optimize import minimize, fminbound
@@ -14,7 +14,7 @@ import numpy as np
 
 
 s = open('D:\\1.txt').read().replace(',', '.')
-a = np.loadtxt(StringIO.StringIO(s))
+a = np.loadtxt(io.StringIO(s))
 
 f_free = a[:, 0]
 w_free = a[:, 1]
@@ -82,7 +82,7 @@ x0 = [10., 44.36342501,   80., 100., 120., 150.]
 res = minimize(f, x0, method='TNC', tol=1e-6,
                bounds=((5, 20), (30, 50), (50, 100), (90, 120), (110, 140), (130, 200)))
 
-print res.x
+print(res.x)
 # plt.plot(w_free, f_free, label='experimental')
 # plt.legend(loc='best')
 #

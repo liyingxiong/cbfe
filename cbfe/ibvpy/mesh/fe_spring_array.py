@@ -18,9 +18,9 @@ from traits.api import \
 
 from mathkit.matrix_la.sys_mtx_assembly import \
     SysMtxArray
-from fe_subdomain import FESubDomain
-from i_fe_subdomain import IFESubDomain
-from i_fe_uniform_domain import IFEUniformDomain
+from .fe_subdomain import FESubDomain
+from .i_fe_subdomain import IFESubDomain
+from .i_fe_uniform_domain import IFEUniformDomain
 
 from ibvpy.core.i_tstepper_eval import \
      ITStepperEval

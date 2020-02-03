@@ -6,9 +6,9 @@ Created on 01.04.2017
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from tensile_test_predefine_crack import CompositeTensileTest
-from cb import NonLinearCB
-from fe_nls_solver_cb import MATSEval, FETS1D52ULRH, TStepper, TLoop
+from .tensile_test_predefine_crack import CompositeTensileTest
+from .cb import NonLinearCB
+from .fe_nls_solver_cb import MATSEval, FETS1D52ULRH, TStepper, TLoop
 from stats.misc.random_field.random_field_1D import RandomField
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
